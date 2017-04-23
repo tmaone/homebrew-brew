@@ -1,4 +1,5 @@
-# Personal homebrew tap, contains versions of packages usuall not found in official taps.
+# Personal tap
+## contains versions usually not found in official repos
 ----
 
 ## How do I install these formulae?
