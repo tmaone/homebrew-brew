@@ -1,0 +1,1 @@
+../sub/lsusb/lsusb.rb
