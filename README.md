@@ -1,5 +1,5 @@
-# Personal tap
-## contains versions usually not found in official repos
+# Personal Meta-tap
+## contains homebrew taps manaded as git subtrees
 ----
 
 ## How do I install these formulae?
@@ -11,6 +11,11 @@ Or install via URL (which will not receive updates):
 
 ```
 brew install https://raw.githubusercontent.com/tmaone/brew/master/Formula/<formula>.rb
+```
+Do not forget to pin the tap so as to prioritize these formulae before core ones.
+
+```
+brew tap-pin tmaone/brew
 ```
 
 ## Documentation
