@@ -1,5 +1,5 @@
 # Personal Meta-tap
-## contains homebrew taps manaded as git subtrees
+## contains homebrew taps managed as git subtrees
 ----
 
 ## How do I install these formulae?
