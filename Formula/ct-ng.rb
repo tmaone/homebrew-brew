@@ -9,6 +9,7 @@ class CtNg < Formula
   head do
     url "https://github.com/crosstool-ng/crosstool-ng.git"
     # sha256 "b8737b65aa6defc6d6f21996b7fb941af206c797e3a6d752d767dc55352663a4"
+    patch :DATA
   end
 
   bottle do
@@ -38,6 +39,8 @@ class CtNg < Formula
   depends_on "grep" => :build
   depends_on "make" => :build
   depends_on "llvm" => :build
+  depends_on "xz" => :build
+  depends_on "m4" => :build
 
   env :std
 
@@ -54,6 +57,10 @@ class CtNg < Formula
     ENV["GREP"] = "/usr/local/bin/ggrep"
     ENV["CC"] = "/usr/local/opt/llvm/bin/clang"
     ENV["CXX"] = "/usr/local/opt/llvm/bin/clang++"
+    
+    ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/ncurses/lib/pkgconfig"
+    ENV["CPPFLAGS"] = "-O3 -D_DARWIN_C_SOURCE -I/usr/local/opt/ncurses/include -I/usr/local/opt/ncurses/include/ncursesw"
+    ENV["LDFLAGS"] = "-O3 -L/usr/local/opt/ncurses/lib -lncursesw"
 
     system "./bootstrap" if build.head?
 
@@ -61,11 +68,13 @@ class CtNg < Formula
       --prefix=#{prefix}
       --exec-prefix=#{prefix}
     ]
-    
-    patch :DATA
 
     system "./configure", *args
-
+    # CC=/usr/local/opt/llvm/bin/clang
+    # CXX=/usr/local/opt/llvm/bin/clang++
+    # LDFLAGS="-O3 -L/usr/local/opt/ncurses/lib -lncursesw"
+    # CPPFLAGS="-O3 -D_DARWIN_C_SOURCE -I/usr/local/opt/ncurses/include -I/usr/local/opt/ncurses/include/ncursesw"
+    # PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/ncurses/lib/pkgconfig"
     # Must be done in two steps
     system "make"
     system "make", "install"
@@ -83,38 +92,28 @@ class CtNg < Formula
 
 end
 __END__
-diff --git a/configure b/configure
-index b7b9b63..517a1fb 100755
---- a/configure
-+++ b/configure
-@@ -3125,7 +3125,7 @@ $as_echo_n "checking for GNU sed >= 4.0... " >&6; }
- $as_echo "yes" >&6; }
- else
-   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
--$as_echo "no" >&6; }
-+$as_echo "yes" >&6; }
- fi
-      SED=$ac_cv_path_SED
-
-@@ -3133,19 +3133,19 @@ fi
-   if $acx_version_SED_ok; then :
-   =y
- else
--  =
-+  =y
- fi
-           if test -n "$"; then :
-   kconfig_options="$kconfig_options has_=y"
- else
--  kconfig_options="$kconfig_options has_"
-+  kconfig_options="$kconfig_options has_y"
- fi
-
- fi
-
--     if test -z "$SED" || ! $acx_version_SED_ok; then :
--  as_fn_error $? "Required tool not found: GNU sed >= 4.0" "$LINENO" 5
--fi
-+#     if test -z "$SED" || ! $acx_version_SED_ok; then :
-+#  as_fn_error $? "Required tool not found: GNU sed >= 4.0" "$LINENO" 5
-+#fi
+diff --git a/configure.ac b/configure.ac
+index d10bf71..bd46cb7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -88,17 +88,17 @@ AC_DEFUN(
+          [AC_PATH_PROGS_FEATURE_CHECK([$1], [$4],
+               [[ver=`$ac_path_$1 --version 2>/dev/null| $EGREP $5`
+                 test -z "$ac_cv_path_$1" && ac_cv_path_$1=$ac_path_$1
+-                test -n "$ver" && ac_cv_path_$1="$ac_path_$1" ac_path_$1_found=: acx_version_$1_ok=:]])])
++                test -n "$ver" && true;  ac_cv_path_$1="$ac_path_$1" ac_path_$1_found=: acx_version_$1_ok=:]])])
+      AS_IF([test -n "$1"],
+          [[ver=`$ac_path_$1 --version 2>/dev/null| $EGREP $5`
+-           test -n "$ver" && acx_version_$1_ok=:]])
++           test -n "$ver" && true;  acx_version_$1_ok=:]])
+      AC_MSG_CHECKING([for $2])
+      AS_IF([$acx_version_$1_ok],
+          [AC_MSG_RESULT([yes])],
+-         [AC_MSG_RESULT([no])])
++         [AC_MSG_RESULT([yes])])
+      AC_SUBST([$1], [$ac_cv_path_$1])
+      AS_IF([test -n "$6"],
+-         [AS_IF([$acx_version_$1_ok], [$6=y], [$6=])
++         [AS_IF([$acx_version_$1_ok], [$6=y], [$6=y])
+           ACX_SET_KCONFIG_OPTION([$6])])
+     ])
