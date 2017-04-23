@@ -155,7 +155,7 @@ module metap
 
     # Convert ignored kegs into full names
     ignored_kegs.map! { |k| as_formula(k).full_name }
-    rm_kegs.each { |keg_name| rmtree keg_name, force, ignored_kegs }
+    ohai.each { |keg_name| rmtree keg_name, force, ignored_kegs }
   end
 end
 
