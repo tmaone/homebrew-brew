@@ -6,7 +6,7 @@ require 'cmd/deps'
 
 # I have no clue about ruby and this is my first attmpt to pointless script..
 
-module metap
+module BrewMetap
 
   USAGE = <<-EOS.undent
   DESCRIPTION
@@ -93,11 +93,11 @@ module metap
       end
     end
     yield.tap{       # After yielding to the block, save the return value
-      iter = false   # Tell the thread to exit, cleaning up after itselfâ€¦
-      @spinner.join   # â€¦and wait for it to do so.
+      iter = false   # Tell the thread to exit, cleaning up after itself…
+      @spinner.join   # …and wait for it to do so.
     }                # Use the block's return value as the method's
   end
-
+  
   def should_proceed_or_quit(prompt)
     puts ""
     unless should_proceed(prompt)
@@ -107,8 +107,13 @@ module metap
     end
     return true
   end
-  # 
-  def rmtree(tap, force=false, quiet=false, dry_run=true)
+
+  def should_proceed(proceed=false)
+
+
+  end
+  #
+  def metap(tap, force=false, quiet=false, dry_run=true)
     if !force
         return
       end
@@ -125,7 +130,7 @@ module metap
   def main
     force = false
     ignored_kegs = []
-    rm_kegs = []
+    metap = []
     quiet = false
 
     if ARGV.size < 1 or ['-h', '?', '--help'].include? ARGV.first
@@ -133,14 +138,14 @@ module metap
       exit 0
     end
 
-    raise KegUnspecifiedError if ARGV.named.empty?
-    
+    reraise KegUnspecifiedError if ARGV.named.empty?
+
     loop { case ARGV[0]
         when '--quiet' then ARGV.shift; quiet = true
         when '--dry-run' then ARGV.shift; @dry_run = true
         when '--force' then  ARGV.shift; force = true
         when /^-/ then  puts "Unknown option: #{ARGV.shift.inspect}"; puts USAGE; exit 1
-        when /^[^-]/ then rm_kegs.push(ARGV.shift)
+        when /^[^-]/ then metap.push(ARGV.shift)
         else break
     end; }
 
@@ -153,12 +158,14 @@ module metap
       puts "This is a dry-run, nothing will be deleted"
     end
 
+    puts "metap"
+
     # Convert ignored kegs into full names
-    ignored_kegs.map! { |k| as_formula(k).full_name }
-    ohai.each { |keg_name| rmtree keg_name, force, ignored_kegs }
+    # ignored_kegs.map! { |k| as_formula(k).full_name }
+    # ohai.each { |keg_name| metap keg_name, force, ignored_kegs }
   end
 end
 
-metap.main
+BrewMetap.main
 
 exit 0
