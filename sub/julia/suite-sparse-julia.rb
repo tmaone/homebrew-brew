@@ -18,7 +18,7 @@ class SuiteSparseJulia < Formula
   keg_only 'Conflicts with suite-sparse in homebrew-science.'
 
   depends_on "tbb" => :optional
-  depends_on "staticfloat/julia/openblas-julia"
+  depends_on "tmaone/metap/openblas-julia"
 
   def install
     # SuiteSparse doesn't like to build in parallel

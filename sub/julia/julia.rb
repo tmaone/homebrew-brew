@@ -33,7 +33,7 @@ class Julia < Formula
     sha256 "a58c5edf56c1136b326a5f06bdf77217e93f012c2d9dbabafe2311bf0e2a8e3c" => :el_capitan
   end
 
-  depends_on "staticfloat/julia/llvm37-julia"
+  depends_on "tmaone/metap/llvm37-julia"
   depends_on "pcre2"
   depends_on "gmp"
   depends_on "fftw"
@@ -44,9 +44,9 @@ class Julia < Formula
   depends_on "cmake" => :build
 
   # We have our custom formulae of arpack, openblas and suite-sparse
-  depends_on "staticfloat/julia/arpack-julia"
-  depends_on "staticfloat/julia/openblas-julia"
-  depends_on "staticfloat/julia/suite-sparse-julia"
+  depends_on "tmaone/metap/arpack-julia"
+  depends_on "tmaone/metap/openblas-julia"
+  depends_on "tmaone/metap/suite-sparse-julia"
 
   # Need this as Julia's build process is quite messy with respect to env variables
   env :std

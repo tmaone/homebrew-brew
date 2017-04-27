@@ -19,7 +19,7 @@ class ArpackJulia < Formula
   keg_only 'Conflicts with arpack in homebrew-science.'
 
   depends_on :fortran
-  depends_on 'staticfloat/julia/openblas-julia'
+  depends_on 'tmaone/metap/openblas-julia'
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
