@@ -28,11 +28,11 @@ class CtNg < Formula
   depends_on "flex" => :build
   depends_on "gperf" => :build
   depends_on "coreutils" => :build
-  depends_on "ncurses"  =>:build
+  depends_on "ncurses"
   depends_on "gnu-tar"  =>:build
   depends_on "texinfo" =>:build
   depends_on "wget" =>:build
-  depends_on "tmaone/brew/gnu-sed" =>:build
+  depends_on "tmaone/metap/gnu-sed" =>:build
   depends_on "gawk" =>:build
   depends_on "binutils"  =>:build
   depends_on "libelf" =>:build
@@ -59,8 +59,8 @@ class CtNg < Formula
     ENV["CXX"] = "/usr/local/opt/llvm/bin/clang++"
     
     ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/ncurses/lib/pkgconfig"
-    ENV["CPPFLAGS"] = "-O3 -D_DARWIN_C_SOURCE -I/usr/local/opt/ncurses/include -I/usr/local/opt/ncurses/include/ncursesw"
-    ENV["LDFLAGS"] = "-O3 -L/usr/local/opt/ncurses/lib -lncursesw"
+    # ENV["CPPFLAGS"] = "-O3 -D_DARWIN_C_SOURCE -I/usr/local/opt/ncurses/include -I/usr/local/opt/ncurses/include/ncursesw"
+    # ENV["LDFLAGS"] = "-O3 -L/usr/local/opt/ncurses/lib -lncursesw"
 
     system "./bootstrap" if build.head?
 
