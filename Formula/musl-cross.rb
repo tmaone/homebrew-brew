@@ -1,1 +1,0 @@
-../sub/musl/musl-cross.rb

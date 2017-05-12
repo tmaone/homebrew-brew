@@ -1,1 +1,0 @@
-../sub/dmidecode/Formula/dmidecode.rb

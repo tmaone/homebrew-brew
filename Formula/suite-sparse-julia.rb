@@ -1,1 +1,0 @@
-../sub/julia/suite-sparse-julia.rb

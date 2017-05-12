@@ -1,1 +1,0 @@
-../sub/klee/minisat.rb
