@@ -45,7 +45,7 @@ class JuliaHead < Formula
 
   # We have our custom formulae of arpack, openblas and suite-sparse
   depends_on "staticfloat/julia/arpack-julia"
-  depends_on "staticfloat/julia/openblas-julia"
+  depends_on "staticfloat/julia/openblas-julia" => ["target", "#{Hardware::CPU.family}".upcase]
   depends_on "staticfloat/julia/suite-sparse-julia"
 
   # Need this as Julia's build process is quite messy with respect to env variables
