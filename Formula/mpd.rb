@@ -146,14 +146,14 @@ class Mpd < Formula
     <plist version="1.0">
     <dict>
         <key>Label</key>
-        <string>#{plist_name}</string>
+        <string>mpd</string>
         <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
+        <string>/usr/local</string>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_bin}/mpd</string>
+            <string>/usr/local/opt/mpd/bin/mpd</string>
             <string>--no-daemon</string>
-            <string>#{HOME}/.mpd/mpd.conf</string>
+            <string>/Users/mds/.mpd/mpd.conf</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
