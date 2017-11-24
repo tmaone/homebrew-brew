@@ -62,7 +62,7 @@ class ShairportSync < Formula
         <string>#{HOMEBREW_PREFIX}</string>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_bin}/mpd</string>
+            <string>#{opt_bin}/shairport-sync</string>
             <string>--no-daemon</string>
             <string>--verbose</string>
         </array>
