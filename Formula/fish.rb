@@ -1,4 +1,4 @@
-class Mfish < Formula
+class fish < Formula
 	desc "User-friendly command-line shell for UNIX-like operating systems"
 	homepage "https://fishshell.com"
 
@@ -15,6 +15,7 @@ class Mfish < Formula
 	depends_on "homebrew/core/ncurses" => :build
 	depends_on "cmake" => :build
 	depends_on "pkg-config" => :build
+  depends_on "gettext" => :build
 	depends_on "pcre2"
 	depends_on "homebrew/core/ncurses"
 	depends_on :python3
@@ -24,8 +25,6 @@ class Mfish < Formula
 	needs :cxx11
 
 	def install
-
-		# ENV.extend(Stdenv)
 
 		ENV["CC"] = "/usr/local/opt/llvm/bin/clang"
 		ENV["CXX"] = "/usr/local/opt/llvm/bin/clang++"
@@ -39,6 +38,7 @@ class Mfish < Formula
 			-G Ninja
 			-DCMAKE_OSX_ARCHITECTURES=x86_64
 			-DCMAKE_BUILD_TYPE=Release
+      -DWITH_GETTEXT=OFF
 			-DCMAKE_INSTALL_PREFIX=#{prefix}
 			-DCMAKE_AR=/usr/local/opt/llvm/bin/llvm-ar
 			-DCMAKE_RANLIB=/usr/local/opt/llvm/bin/llvm-ranlib
@@ -52,33 +52,7 @@ class Mfish < Formula
 			system "ninja"
 			system "ninja", "install"
     end
-		# system "autoreconf", "--no-recursive" if build.head?
-		# In Homebrew's 'superenv' sed's path will be incompatible, so
-		# the correct path is passed into configure here.
-		# args = %W[
-		# 	--prefix=#{prefix}
-		# 	--with-extra-functionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_functions.d
-		# 	--with-extra-completionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
-		# 	--with-extra-confdir=#{HOMEBREW_PREFIX}/share/fish/vendor_conf.d
-		# 	CC=/usr/local/opt/llvm/bin/clang
-		# 	CXX=/usr/local/opt/llvm/bin/clang++
-		# 	LD=/usr/local/opt/llvm/bin/ld.ldd
-		# 	SED=/usr/bin/sed
-		# ]
-    #
-		# system "./configure", *args
-		# system "make", "install"
-	end
 
-	def caveats; <<~EOS
-		You will need to add:
-			#{HOMEBREW_PREFIX}/bin/fish
-		to /etc/shells.
-
-		Then run:
-			chsh -s #{HOMEBREW_PREFIX}/bin/fish
-		to make fish your default shell.
-		EOS
 	end
 
 	def post_install
