@@ -63,7 +63,6 @@ class ShairportSync < Formula
         <key>ProgramArguments</key>
         <array>
             <string>#{opt_bin}/shairport-sync</string>
-            <string>--no-daemon</string>
             <string>--verbose</string>
         </array>
         <key>RunAtLoad</key>
