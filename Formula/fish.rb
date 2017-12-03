@@ -4,44 +4,55 @@ class Fish < Formula
 
 	head do
 		url "https://github.com/fish-shell/fish-shell.git", :shallow => true
+		depends_on "autoconf" => :build
+		depends_on "automake" => :build
+		depends_on "cmake" => :build
+		depends_on "doxygen" => :build
+		depends_on "llvm" => :build
+		depends_on "ninja" => :build
+		depends_on "homebrew/core/ncurses" => :build
+		depends_on "pcre2" => :build
+		depends_on "pkg-config" => :build
+		depends_on :python3 => :build
 	end
 
 	ARGV << "--HEAD"
-	ARGV << "--env=std"
+	# ARGV << "--env=std"
 	ARGV << "--verbose"
 
-	depends_on "doxygen" => :build
-	depends_on "pcre2" => :build
-	depends_on "homebrew/core/ncurses" => :build
-	depends_on "cmake" => :build
-	depends_on "pkg-config" => :build
-  depends_on "gettext" => :build
 	depends_on "pcre2"
 	depends_on "homebrew/core/ncurses"
 	depends_on :python3
-	depends_on "llvm" => :build
-	depends_on "ninja" => :build
 
 	needs :cxx11
 
 	def install
 
+		ENV["SED"] = "/usr/bin/sed"
+		ENV["CXXFLAGS"] = "-std=c++11"
+
 		ENV["CC"] = "/usr/local/opt/llvm/bin/clang"
 		ENV["CXX"] = "/usr/local/opt/llvm/bin/clang++"
 		ENV["LD"] = "/usr/local/opt/llvm/bin/ld.ldd"
-		ENV["SED"] = "/usr/bin/sed"
 		ENV["RANLIB"] = "/usr/local/opt/llvm/bin/llvm-ranlib"
 		ENV["AR"] = "/usr/local/opt/llvm/bin/llvm-ar"
-		ENV["CXXFLAGS"] = "-std=c++11"
+		ENV["OBJDUMP"] = "/usr/local/opt/llvm/bin/llvm-objdump"
+		ENV["NM"] = "/usr/local/opt/llvm/bin/llvm-nm"
+		# -DCMAKE_RANLIB=/usr/local/opt/llvm/bin/llvm-ranlib
+		# -DCMAKE_AR=/usr/local/opt/llvm/bin/llvm-ar
 
 		args = std_cmake_args + %W[
 			-G Ninja
 			-DCMAKE_OSX_ARCHITECTURES=x86_64
 			-DCMAKE_BUILD_TYPE=Release
-      -DWITH_GETTEXT=OFF
+			-DWITH_GETTEXT=OFF
 			-DCMAKE_INSTALL_PREFIX=#{prefix}
-			-DCMAKE_AR=/usr/local/opt/llvm/bin/llvm-ar
-			-DCMAKE_RANLIB=/usr/local/opt/llvm/bin/llvm-ranlib
+			-DCMAKE_RANLIB=#{ENV["RANLIB"]}
+			-DCMAKE_AR=#{ENV["AR"]}
+			-DCMAKE_OBJDUMP=#{ENV["OBJDUMP"]}
+			-DCMAKE_NM=#{ENV["NM"]}
+			-DSED=#{ENV["SED"]}
+			-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 			-Dextra_completionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
 			-Dextra_functionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_functions.d
 			-Dextra_confdir=#{HOMEBREW_PREFIX}/share/fish/vendor_conf.d
@@ -50,6 +61,7 @@ class Fish < Formula
 		mkdir "build" do
 			system "cmake", "..", *args
 			system "ninja"
+			system "ninja", "doc"
 			system "ninja", "install"
     end
 
