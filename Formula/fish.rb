@@ -3,17 +3,11 @@ class Fish < Formula
 	homepage "https://fishshell.com"
 
 	head do
-		url "https://github.com/fish-shell/fish-shell.git", :shallow => true
-		depends_on "autoconf" => :build
-		depends_on "automake" => :build
-		depends_on "cmake" => :build
-		depends_on "doxygen" => :build
-		depends_on "llvm" => :build
-		depends_on "ninja" => :build
-		depends_on "homebrew/core/ncurses" => :build
-		depends_on "pcre2" => :build
-		depends_on "pkg-config" => :build
-		depends_on :python3 => :build
+		  url "https://github.com/fish-shell/fish-shell.git", :shallow => true
+      depends_on "autoconf" => :build
+      depends_on "cmake" => :build
+      depends_on "ninja" => :build  
+      depends_on "doxygen" => :build  
 	end
 
 	ARGV << "--HEAD"
@@ -22,7 +16,7 @@ class Fish < Formula
 
 	depends_on "pcre2"
 	depends_on "homebrew/core/ncurses"
-	depends_on :python3
+	depends_on "python3"
 
 	needs :cxx11
 
@@ -76,4 +70,5 @@ class Fish < Formula
 	test do
 		system "#{bin}/fish", "-c", "echo"
 	end
+
 end
