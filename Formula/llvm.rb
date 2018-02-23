@@ -1,16 +1,15 @@
 class CodesignRequirement < Requirement
-  include FileUtils
   fatal true
 
   satisfy(:build_env => false) do
-    mktemp do
-      cp "/usr/bin/false", "llvm_check"
-      quiet_system "/usr/bin/codesign", "-f", "-s", "8C29B8116768F1C73194524C4A4ABF6DCCB88787", "--dryrun", "llvm_check"
+    FileUtils.mktemp do
+      FileUtils.cp "/usr/bin/false", "llvm_check"
+      quiet_system "/usr/bin/codesign", "-f", "-s", "lldb_codesign", "--dryrun", "llvm_check"
     end
   end
 
   def message
-    <<-EOS.undent
+    <<~EOS
       lldb_codesign identity must be available to build with LLDB.
       See: https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt
     EOS
@@ -22,63 +21,71 @@ class Llvm < Formula
   homepage "https://llvm.org/"
 
   stable do
-    url "https://llvm.org/releases/4.0.1/llvm-4.0.1.src.tar.xz"
-    sha256 "da783db1f82d516791179fe103c71706046561f7972b18f0049242dee6712b51"
+    url "https://releases.llvm.org/5.0.1/llvm-5.0.1.src.tar.xz"
+    sha256 "5fa7489fc0225b11821cab0362f5813a05f2bcf2533e8a4ea9c9c860168807b0"
 
     resource "clang" do
-      url "https://llvm.org/releases/4.0.1/cfe-4.0.1.src.tar.xz"
-      sha256 "61738a735852c23c3bdbe52d035488cdb2083013f384d67c1ba36fabebd8769b"
+      url "https://releases.llvm.org/5.0.1/cfe-5.0.1.src.tar.xz"
+      sha256 "135f6c9b0cd2da1aff2250e065946258eb699777888df39ca5a5b4fe5e23d0ff"
     end
 
     resource "clang-extra-tools" do
-      url "https://llvm.org/releases/4.0.1/clang-tools-extra-4.0.1.src.tar.xz"
-      sha256 "35d1e64efc108076acbe7392566a52c35df9ec19778eb9eb12245fc7d8b915b6"
+      url "https://releases.llvm.org/5.0.1/clang-tools-extra-5.0.1.src.tar.xz"
+      sha256 "9aada1f9d673226846c3399d13fab6bba4bfd38bcfe8def5ee7b0ec24f8cd225"
     end
 
     resource "compiler-rt" do
-      url "https://llvm.org/releases/4.0.1/compiler-rt-4.0.1.src.tar.xz"
-      sha256 "a3c87794334887b93b7a766c507244a7cdcce1d48b2e9249fc9a94f2c3beb440"
+      url "https://releases.llvm.org/5.0.1/compiler-rt-5.0.1.src.tar.xz"
+      sha256 "4edd1417f457a9b3f0eb88082530490edf3cf6a7335cdce8ecbc5d3e16a895da"
     end
 
     # Only required to build & run Compiler-RT tests on macOS, optional otherwise.
     # https://clang.llvm.org/get_started.html
     resource "libcxx" do
-      url "https://llvm.org/releases/4.0.1/libcxx-4.0.1.src.tar.xz"
-      sha256 "520a1171f272c9ff82f324d5d89accadcec9bc9f3c78de11f5575cdb99accc4c"
+      url "https://releases.llvm.org/5.0.1/libcxx-5.0.1.src.tar.xz"
+      sha256 "fa8f99dd2bde109daa3276d529851a3bce5718d46ce1c5d0806f46caa3e57c00"
     end
 
     resource "libunwind" do
-      url "https://llvm.org/releases/4.0.1/libunwind-4.0.1.src.tar.xz"
-      sha256 "3b072e33b764b4f9b5172698e080886d1f4d606531ab227772a7fc08d6a92555"
+      url "https://releases.llvm.org/5.0.1/libunwind-5.0.1.src.tar.xz"
+      sha256 "6bbfbf6679435b858bd74bdf080386d084a76dfbf233fb6e47b2c28e0872d0fe"
     end
 
     resource "lld" do
-      url "https://llvm.org/releases/4.0.1/lld-4.0.1.src.tar.xz"
-      sha256 "63ce10e533276ca353941ce5ab5cc8e8dcd99dbdd9c4fa49f344a212f29d36ed"
+      url "https://releases.llvm.org/5.0.1/lld-5.0.1.src.tar.xz"
+      sha256 "d5b36c0005824f07ab093616bdff247f3da817cae2c51371e1d1473af717d895"
     end
 
     resource "lldb" do
-      url "https://llvm.org/releases/4.0.1/lldb-4.0.1.src.tar.xz"
-      sha256 "8432d2dfd86044a0fc21713e0b5c1d98e1d8aad863cf67562879f47f841ac47b"
+      url "https://releases.llvm.org/5.0.1/lldb-5.0.1.src.tar.xz"
+      sha256 "b7c1c9e67975ca219089a3a6a9c77c2d102cead2dc38264f2524aa3326da376a"
+
+      # Fixes "error: no type named 'pid_t' in the global namespace"
+      # https://github.com/Homebrew/homebrew-core/issues/17839
+      # Already fixed in upstream trunk
+      patch do
+        url "https://github.com/llvm-mirror/lldb/commit/324f93b5e30.patch?full_index=1"
+        sha256 "f23fc92c2d61bf6c8bc6865994a75264fafba6ae435e4d2f4cc8327004523fb1"
+      end
     end
 
     resource "openmp" do
-      url "https://llvm.org/releases/4.0.1/openmp-4.0.1.src.tar.xz"
-      sha256 "ec693b170e0600daa7b372240a06e66341ace790d89eaf4a843e8d56d5f4ada4"
+      url "https://releases.llvm.org/5.0.1/openmp-5.0.1.src.tar.xz"
+      sha256 "adb635cdd2f9f828351b1e13d892480c657fb12500e69c70e007bddf0fca2653"
     end
 
     resource "polly" do
-      url "https://llvm.org/releases/4.0.1/polly-4.0.1.src.tar.xz"
-      sha256 "b443bb9617d776a7d05970e5818aa49aa2adfb2670047be8e9f242f58e84f01a"
+      url "https://releases.llvm.org/5.0.1/polly-5.0.1.src.tar.xz"
+      sha256 "9dd52b17c07054aa8998fc6667d41ae921430ef63fa20ae130037136fdacf36e"
     end
   end
 
   bottle do
     cellar :any
     rebuild 1
-    sha256 "109ea0b2b78a44b2256ebb9b2d5966185e7b6a8045cc6dbcea85fab1051ea2a4" => :sierra
-    sha256 "f3be215d6e8f41504add8b09ac97d695b988d333266ff163fc2c53405a468a38" => :el_capitan
-    sha256 "8ec98b7eaf1de2dca1e2a10caa3edd2cace088185257e7bb39fe068713bf5121" => :yosemite
+    sha256 "61c8f073f3fc25971ead1a106f4db95db08b4ba0cd1eb7df7c40f6a2ee74dfbb" => :high_sierra
+    sha256 "da1ffc015d980daaa72affabbadfa4b1b821989f50ea14f5fea7d799eee018e8" => :sierra
+    sha256 "54c1d217622fd298186bad4af680d2ac3aafc237948d581ad1ecb221bc293b38" => :el_capitan
   end
 
   head do
@@ -121,7 +128,7 @@ class Llvm < Formula
     end
   end
 
-  keg_only :provided_by_osx
+  keg_only :provided_by_macos
 
   option "without-compiler-rt", "Do not build Clang runtime support libraries for code sanitizers, builtins, and profiling"
   option "without-libcxx", "Do not build libc++ standard library"
@@ -144,9 +151,9 @@ class Llvm < Formula
   end
 
   if MacOS.version <= :snow_leopard
-    depends_on :python
+    depends_on "python"
   else
-    depends_on :python => :optional
+    depends_on "python" => :optional
   end
   depends_on "cmake" => :build
 
@@ -169,6 +176,10 @@ class Llvm < Formula
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
+
+    if build.with? "python"
+      ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
+    end
 
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
@@ -251,7 +262,8 @@ class Llvm < Formula
         ENV["OPAMROOT"] = Pathname.pwd/"opamroot"
         (Pathname.pwd/"opamroot").mkpath
         system "opam", "init", "--no-setup"
-        system "opam", "install", "ocamlfind", "ctypes"
+        system "opam", "config", "exec", "--",
+               "opam", "install", "ocamlfind", "ctypes"
         system "opam", "config", "exec", "--",
                "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       else
@@ -275,7 +287,7 @@ class Llvm < Formula
 
   def caveats
     if build_libcxx?
-      <<-EOS.undent
+      <<~EOS
         To use the bundled libc++ please add the following LDFLAGS:
           LDFLAGS="-L#{opt_lib} -Wl,-rpath,#{opt_lib}"
       EOS
@@ -285,7 +297,7 @@ class Llvm < Formula
   test do
     assert_equal prefix.to_s, shell_output("#{bin}/llvm-config --prefix").chomp
 
-    (testpath/"omptest.c").write <<-EOS.undent
+    (testpath/"omptest.c").write <<~EOS
       #include <stdlib.h>
       #include <stdio.h>
       #include <omp.h>
@@ -305,7 +317,7 @@ class Llvm < Formula
     testresult = shell_output("./omptest")
 
     sorted_testresult = testresult.split("\n").sort.join("\n")
-    expected_result = <<-EOS.undent
+    expected_result = <<~EOS
       Hello from thread 0, nthreads 4
       Hello from thread 1, nthreads 4
       Hello from thread 2, nthreads 4
@@ -313,7 +325,7 @@ class Llvm < Formula
     EOS
     assert_equal expected_result.strip, sorted_testresult.strip
 
-    (testpath/"test.c").write <<-EOS.undent
+    (testpath/"test.c").write <<~EOS
       #include <stdio.h>
 
       int main()
@@ -323,7 +335,7 @@ class Llvm < Formula
       }
     EOS
 
-    (testpath/"test.cpp").write <<-EOS.undent
+    (testpath/"test.cpp").write <<~EOS
       #include <iostream>
 
       int main()

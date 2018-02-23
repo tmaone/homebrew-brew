@@ -33,6 +33,3 @@ index 424109b..56fad54 100644
 +INSTALL_DOC_FLAGS=-m 0644
 
  SED=/usr/bin/sed
-
-
-
