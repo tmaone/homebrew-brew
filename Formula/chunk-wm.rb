@@ -1,9 +1,12 @@
-class Chunkwm < Formula
+class ChunkWm < Formula
   desc "Tiling window manager for macOS based on plugin architecture"
-  homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.3.3.tar.gz"
-  sha256 "f77711d4b4d6a49927b125f077334efb4e4633e33bf23689d3874c0c40f07e66"
-  head "https://github.com/koekeishiya/chunkwm.git"
+  homepage "https://github.com/koekeishiya/chunkwm.git"
+  # url "https://github.com/koekeishiya/chunkwm/archive/v0.3.3.tar.gz"
+  # sha256 "f77711d4b4d6a49927b125f077334efb4e4633e33bf23689d3874c0c40f07e66"
+  head "https://github.com/tmaone/chunkwm.git"
+
+  ARGV << "--HEAD"
+	ARGV << "--verbose"
 
   option "without-tiling", "Do not build tiling plugin."
   option "without-ffm", "Do not build focus-follow-mouse plugin."
@@ -13,42 +16,27 @@ class Chunkwm < Formula
   option "with-tmp-logging", "Deprecated, here for backward compatibility, does not have effect."
 
   depends_on :macos => :el_capitan
+  depends_on "pkg-config" => :build
+  depends_on "imagemagick" => :build
+  depends_on "freetype" => :build
+  depends_on "libpng" => :build
 
   def install
-    (var/"log/chunkwm").mkpath
-    system "make", "install"
-    inreplace "#{buildpath}/examples/chunkwmrc", "~/.chunkwm_plugins", "#{opt_pkgshare}/plugins"
+
+    system "make", "-f", "Makefile", "install"
+
     bin.install "#{buildpath}/bin/chunkwm"
+    bin.install "#{buildpath}/bin/chunkc"
+  
     (pkgshare/"examples").install "#{buildpath}/examples/chunkwmrc"
+    (pkgshare/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
 
-    system "make", "--directory", "src/chunkc"
-    bin.install "#{buildpath}/src/chunkc/bin/chunkc"
-
-    if build.with? "tiling"
-      system "make", "install", "--directory", "src/plugins/tiling"
-      (pkgshare/"plugins").install "#{buildpath}/plugins/tiling.so"
-      (pkgshare/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
-    end
-
-    if build.with? "ffm"
-      system "make", "install", "--directory", "src/plugins/ffm"
-      (pkgshare/"plugins").install "#{buildpath}/plugins/ffm.so"
-    end
-
-    if build.with? "border"
-      system "make", "install", "--directory", "src/plugins/border"
-      (pkgshare/"plugins").install "#{buildpath}/plugins/border.so"
-    end
-
-    if build.with? "purify"
-      system "make", "install", "--directory", "src/plugins/purify"
-      (pkgshare/"plugins").install "#{buildpath}/plugins/purify.so"
-    end
-
-    if build.with? "bar"
-      system "make", "install", "--directory", "src/plugins/bar"
-      (pkgshare/"plugins").install "#{buildpath}/plugins/bar.so"
-    end
+    (pkgshare/"plugins").install "#{buildpath}/plugins/tiling.so"
+    (pkgshare/"plugins").install "#{buildpath}/plugins/ffm.so"
+    (pkgshare/"plugins").install "#{buildpath}/plugins/border.so"
+    (pkgshare/"plugins").install "#{buildpath}/plugins/purify.so"
+    (pkgshare/"plugins").install "#{buildpath}/plugins/blur.so"
+    (pkgshare/"plugins").install "#{buildpath}/plugins/bar.so"
 
   end
 

@@ -21,44 +21,49 @@ class Llvm < Formula
   homepage "https://llvm.org/"
 
   stable do
-    url "https://releases.llvm.org/5.0.1/llvm-5.0.1.src.tar.xz"
-    sha256 "5fa7489fc0225b11821cab0362f5813a05f2bcf2533e8a4ea9c9c860168807b0"
+    url "http://prereleases.llvm.org/6.0.0/rc3/llvm-6.0.0rc3.src.tar.xz"
+    sha256 "8af454fc8b2c1b12b5ea06b192d9cd601623ac19fdebea95c6f1cf37d3c91c83"
 
     resource "clang" do
-      url "https://releases.llvm.org/5.0.1/cfe-5.0.1.src.tar.xz"
-      sha256 "135f6c9b0cd2da1aff2250e065946258eb699777888df39ca5a5b4fe5e23d0ff"
+      url "http://prereleases.llvm.org/6.0.0/rc3/cfe-6.0.0rc3.src.tar.xz"
+      sha256 "03a1ef6afd35057f38ea6882f9e5c41c47de95bf626e9ef53a5efecf4611bddb"
     end
 
     resource "clang-extra-tools" do
-      url "https://releases.llvm.org/5.0.1/clang-tools-extra-5.0.1.src.tar.xz"
-      sha256 "9aada1f9d673226846c3399d13fab6bba4bfd38bcfe8def5ee7b0ec24f8cd225"
+      url "http://prereleases.llvm.org/6.0.0/rc3/clang-tools-extra-6.0.0rc3.src.tar.xz"
+      sha256 "8ecea22b939cc2581cab25752f5635208dd8ab37d5c742bba040eacb10cd6763"
     end
 
     resource "compiler-rt" do
-      url "https://releases.llvm.org/5.0.1/compiler-rt-5.0.1.src.tar.xz"
-      sha256 "4edd1417f457a9b3f0eb88082530490edf3cf6a7335cdce8ecbc5d3e16a895da"
+      url "http://prereleases.llvm.org/6.0.0/rc3/compiler-rt-6.0.0rc3.src.tar.xz"
+      sha256 "9bd30c7cf2f815751ad0e10b216925b0d9760f11d84e79948e5703cbb9ea65d3"
     end
 
     # Only required to build & run Compiler-RT tests on macOS, optional otherwise.
     # https://clang.llvm.org/get_started.html
     resource "libcxx" do
-      url "https://releases.llvm.org/5.0.1/libcxx-5.0.1.src.tar.xz"
-      sha256 "fa8f99dd2bde109daa3276d529851a3bce5718d46ce1c5d0806f46caa3e57c00"
+      url "http://prereleases.llvm.org/6.0.0/rc3/libcxx-6.0.0rc3.src.tar.xz"
+      sha256 "4a479c45fce60f4029fe88fcac4c18f6fad7a5bfdca16057f78d23547adf76b7"
+    end
+
+    resource "libcxxabi" do
+      url "http://prereleases.llvm.org/6.0.0/rc3/libcxxabi-6.0.0rc3.src.tar.xz"
+      sha256 "19d86438483980787d753a6c3ba84a8d4b278ddde0d2487133997716d4e1a112"
     end
 
     resource "libunwind" do
-      url "https://releases.llvm.org/5.0.1/libunwind-5.0.1.src.tar.xz"
-      sha256 "6bbfbf6679435b858bd74bdf080386d084a76dfbf233fb6e47b2c28e0872d0fe"
+      url "http://prereleases.llvm.org/6.0.0/rc3/libunwind-6.0.0rc3.src.tar.xz"
+      sha256 "aa4981ddd54c6c7d8dbdf83756eda65f1cc07f86a6eb36623bb4fb9b6d11269c"
     end
 
     resource "lld" do
-      url "https://releases.llvm.org/5.0.1/lld-5.0.1.src.tar.xz"
-      sha256 "d5b36c0005824f07ab093616bdff247f3da817cae2c51371e1d1473af717d895"
+      url "http://prereleases.llvm.org/6.0.0/rc3/lld-6.0.0rc3.src.tar.xz"
+      sha256 "28796f5066f9c1ffcb06eec7c3b269417173ddf57c43f0f55876ce3144fcdf9a"
     end
 
     resource "lldb" do
-      url "https://releases.llvm.org/5.0.1/lldb-5.0.1.src.tar.xz"
-      sha256 "b7c1c9e67975ca219089a3a6a9c77c2d102cead2dc38264f2524aa3326da376a"
+      url "http://prereleases.llvm.org/6.0.0/rc3/lldb-6.0.0rc3.src.tar.xz"
+      sha256 "f407c517bec1ab233aeeb9f0e6f2e25387125f870f6d560190af855f759ff301"
 
       # Fixes "error: no type named 'pid_t' in the global namespace"
       # https://github.com/Homebrew/homebrew-core/issues/17839
@@ -70,13 +75,13 @@ class Llvm < Formula
     end
 
     resource "openmp" do
-      url "https://releases.llvm.org/5.0.1/openmp-5.0.1.src.tar.xz"
-      sha256 "adb635cdd2f9f828351b1e13d892480c657fb12500e69c70e007bddf0fca2653"
+      url "http://prereleases.llvm.org/6.0.0/rc3/openmp-6.0.0rc3.src.tar.xz"
+      sha256 "b3e828599c836eb131d61b90d5fda794918157015934ebb128ac569dc1b1fad1"
     end
 
     resource "polly" do
-      url "https://releases.llvm.org/5.0.1/polly-5.0.1.src.tar.xz"
-      sha256 "9dd52b17c07054aa8998fc6667d41ae921430ef63fa20ae130037136fdacf36e"
+      url "http://prereleases.llvm.org/6.0.0/rc3/polly-6.0.0rc3.src.tar.xz"
+      sha256 "562b4836461274662e9fadc3e718ad863c51114323362cb088c1bffd0cfd2d2d"
     end
   end
 
@@ -105,6 +110,10 @@ class Llvm < Formula
 
     resource "libcxx" do
       url "https://llvm.org/git/libcxx.git"
+    end
+
+    resource "libcxxabi" do
+      url "https://llvm.org/git/libcxxabi.git"
     end
 
     resource "libunwind" do
@@ -184,7 +193,8 @@ class Llvm < Formula
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
     (buildpath/"projects/openmp").install resource("openmp")
-    (buildpath/"projects/libcxx").install resource("libcxx") if build_libcxx?
+    (buildpath/"projects/libcxx").install resource("libcxx")
+    (buildpath/"projects/libcxxabi").install resource("libcxxabi")
     (buildpath/"projects/libunwind").install resource("libunwind")
     (buildpath/"tools/lld").install resource("lld")
     (buildpath/"tools/polly").install resource("polly")
@@ -209,7 +219,7 @@ class Llvm < Formula
       system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
     end
 
-    if build.with? "compiler-rt"
+    # if build.with? "compiler-rt"
       (buildpath/"projects/compiler-rt").install resource("compiler-rt")
 
       # compiler-rt has some iOS simulator features that require i386 symbols
@@ -218,7 +228,7 @@ class Llvm < Formula
       # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
       # can almost be treated as an entirely different build from llvm.
       ENV.permit_arch_flags
-    end
+    # end
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=ON
@@ -231,17 +241,10 @@ class Llvm < Formula
       -DLLVM_TARGETS_TO_BUILD=all
     ]
     args << "-DLIBOMP_ARCH=x86_64"
-    args << "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON" if build.with? "compiler-rt"
-    args << "-DLLVM_CREATE_XCODE_TOOLCHAIN=ON" if build.with? "toolchain"
-
-    if build.with? "shared-libs"
-      args << "-DBUILD_SHARED_LIBS=ON"
-      args << "-DLIBOMP_ENABLE_SHARED=ON"
-    else
-      args << "-DLLVM_BUILD_LLVM_DYLIB=ON"
-    end
-
-    args << "-DLLVM_ENABLE_LIBCXX=ON" if build_libcxx?
+    args << "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON"
+    args << "-DLLVM_CREATE_XCODE_TOOLCHAIN=ON"
+    args << "-DLLVM_BUILD_LLVM_DYLIB=ON"
+    args << "-DLLVM_ENABLE_LIBCXX=ON"
 
     if build.with?("lldb") && build.with?("python")
       args << "-DLLDB_RELOCATABLE_PYTHON=ON"
@@ -249,11 +252,9 @@ class Llvm < Formula
       args << "-DPYTHON_INCLUDE_DIR=#{pyinclude}"
     end
 
-    if build.with? "libffi"
-      args << "-DLLVM_ENABLE_FFI=ON"
-      args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_lib}/libffi-#{Formula["libffi"].version}/include"
-      args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
-    end
+    args << "-DLLVM_ENABLE_FFI=ON"
+    args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_lib}/libffi-#{Formula["libffi"].version}/include"
+    args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
 
     mktemp do
       if build.with? "ocaml"
