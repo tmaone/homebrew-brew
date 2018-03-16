@@ -27,7 +27,7 @@ class ChunkWm < Formula
 
     bin.install "#{buildpath}/bin/chunkwm"
     bin.install "#{buildpath}/bin/chunkc"
-  
+
     (pkgshare/"examples").install "#{buildpath}/examples/chunkwmrc"
     (pkgshare/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
 

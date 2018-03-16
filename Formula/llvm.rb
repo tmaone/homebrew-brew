@@ -68,10 +68,10 @@ class Llvm < Formula
       # Fixes "error: no type named 'pid_t' in the global namespace"
       # https://github.com/Homebrew/homebrew-core/issues/17839
       # Already fixed in upstream trunk
-      patch do
-        url "https://github.com/llvm-mirror/lldb/commit/324f93b5e30.patch?full_index=1"
-        sha256 "f23fc92c2d61bf6c8bc6865994a75264fafba6ae435e4d2f4cc8327004523fb1"
-      end
+      # patch do
+      #  url "https://github.com/llvm-mirror/lldb/commit/324f93b5e30.patch?full_index=1"
+      #    sha256 "f23fc92c2d61bf6c8bc6865994a75264fafba6ae435e4d2f4cc8327004523fb1"
+      # end
     end
 
     resource "openmp" do
@@ -158,13 +158,10 @@ class Llvm < Formula
     depends_on "opam" => :build
     depends_on "pkg-config" => :build
   end
-
-  if MacOS.version <= :snow_leopard
-    depends_on "python"
-  else
-    depends_on "python" => :optional
-  end
+  
+  depends_on "python" => :build
   depends_on "cmake" => :build
+  depends_on "ninja" => :build
 
   if build.with? "lldb"
     depends_on "swig" if MacOS.version >= :lion
@@ -186,9 +183,7 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    if build.with? "python"
-      ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
-    end
+    ENV.prepend_path "PATH", Formula["python"].opt_bin/"bin"
 
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
@@ -200,12 +195,10 @@ class Llvm < Formula
     (buildpath/"tools/polly").install resource("polly")
 
     if build.with? "lldb"
-      if build.with? "python"
-        pyhome = `python-config --prefix`.chomp
-        ENV["PYTHONHOME"] = pyhome
-        pylib = "#{pyhome}/lib/libpython2.7.dylib"
-        pyinclude = "#{pyhome}/include/python2.7"
-      end
+      pyhome = `python-config --prefix`.chomp
+      ENV["PYTHONHOME"] = pyhome
+      pylib = "#{pyhome}/lib/libpython3.6.dylib"
+      pyinclude = "#{pyhome}/include/python3.6m"        
       (buildpath/"tools/lldb").install resource("lldb")
 
       # Building lldb requires a code signing certificate.
@@ -250,6 +243,7 @@ class Llvm < Formula
       args << "-DLLDB_RELOCATABLE_PYTHON=ON"
       args << "-DPYTHON_LIBRARY=#{pylib}"
       args << "-DPYTHON_INCLUDE_DIR=#{pyinclude}"
+      args << "-DPYTHON_EXECUTABLE=/usr/local/bin/python"
     end
 
     args << "-DLLVM_ENABLE_FFI=ON"
@@ -258,7 +252,7 @@ class Llvm < Formula
 
     mktemp do
       if build.with? "ocaml"
-        args << "-DLLVM_OCAML_INSTALL_PATH=#{lib}/ocaml"
+        #args << "-DLLVM_OCAML_INSTALL_PATH=#{lib}/ocaml"
         ENV["OPAMYES"] = "1"
         ENV["OPAMROOT"] = Pathname.pwd/"opamroot"
         (Pathname.pwd/"opamroot").mkpath
@@ -266,13 +260,13 @@ class Llvm < Formula
         system "opam", "config", "exec", "--",
                "opam", "install", "ocamlfind", "ctypes"
         system "opam", "config", "exec", "--",
-               "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
+               "cmake", "-G", "Ninja", buildpath, *(std_cmake_args + args)
       else
-        system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
+        system "cmake", "-G", "Ninja", buildpath, *(std_cmake_args + args)
       end
-      system "make"
-      system "make", "install"
-      system "make", "install-xcode-toolchain" if build.with? "toolchain"
+      system "ninja"
+      system "ninja", "install"
+      system "ninja", "install-xcode-toolchain" if build.with? "toolchain"
     end
 
     (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
@@ -282,8 +276,8 @@ class Llvm < Formula
     man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
 
     # install llvm python bindings
-    (lib/"python2.7/site-packages").install buildpath/"bindings/python/llvm"
-    (lib/"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang"
+    (lib/"python3.6/site-packages").install buildpath/"bindings/python/llvm"
+    (lib/"python3.6/site-packages").install buildpath/"tools/clang/bindings/python/clang"
   end
 
   def caveats

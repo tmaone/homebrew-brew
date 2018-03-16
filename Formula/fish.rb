@@ -4,10 +4,9 @@ class Fish < Formula
 
 	head do
 		  url "https://github.com/fish-shell/fish-shell.git", :shallow => true
-      depends_on "autoconf" => :build
       depends_on "cmake" => :build
-      depends_on "ninja" => :build  
-      depends_on "doxygen" => :build  
+      depends_on "ninja" => :build
+      depends_on "doxygen" => :build
 	end
 
 	ARGV << "--HEAD"
@@ -16,7 +15,7 @@ class Fish < Formula
 
 	depends_on "pcre2"
 	depends_on "homebrew/core/ncurses"
-	depends_on "python3"
+	depends_on "python"
 
 	needs :cxx11
 
@@ -24,7 +23,6 @@ class Fish < Formula
 
 		ENV["SED"] = "/usr/bin/sed"
 		ENV["CXXFLAGS"] = "-std=c++11"
-
 		ENV["CC"] = "/usr/local/opt/llvm/bin/clang"
 		ENV["CXX"] = "/usr/local/opt/llvm/bin/clang++"
 		ENV["LD"] = "/usr/local/opt/llvm/bin/ld.ldd"
@@ -32,8 +30,6 @@ class Fish < Formula
 		ENV["AR"] = "/usr/local/opt/llvm/bin/llvm-ar"
 		ENV["OBJDUMP"] = "/usr/local/opt/llvm/bin/llvm-objdump"
 		ENV["NM"] = "/usr/local/opt/llvm/bin/llvm-nm"
-		# -DCMAKE_RANLIB=/usr/local/opt/llvm/bin/llvm-ranlib
-		# -DCMAKE_AR=/usr/local/opt/llvm/bin/llvm-ar
 
 		args = std_cmake_args + %W[
 			-G Ninja
@@ -45,6 +41,8 @@ class Fish < Formula
 			-DCMAKE_AR=#{ENV["AR"]}
 			-DCMAKE_OBJDUMP=#{ENV["OBJDUMP"]}
 			-DCMAKE_NM=#{ENV["NM"]}
+			-DPCRE2_INCLUDE_DIR=#{HOMEBREW_PREFIX}/opt/pcre2/include
+			-DPCRE2_LIB=#{HOMEBREW_PREFIX}/opt/pcre2/lib/libpcre2-32.dylib
 			-DSED=#{ENV["SED"]}
 			-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 			-Dextra_completionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
