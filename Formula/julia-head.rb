@@ -47,24 +47,13 @@ class JuliaHead < Formula
   ARGV << "--HEAD"
   ARGV << "--verbose"
 
-  # # # Here we build up a list of patches to be applied
-  # def patches
-  #   patch_list = []
-  #   # patch :DATA
-  #   # This patch ensures that suitesparse libraries are installed
-  #   # patch_list << "https://gist.githubusercontent.com/timxzl/c6f474fa387382267723/raw/2ecb0270d83f0a167358ff2a396cd6004e1b02a0/Makefile.diff"
-  #   patch_list << :DATA
-  #   return patch_list
-  # end
-
-
   def install
+
     ENV['PLATFORM'] = 'darwin'
     ENV['PYTHONPATH'] = ""
 
     # Build up list of build options
     build_opts = ["prefix=#{prefix}"]
-    # build_opts << "USE_BLAS64=0"
     build_opts << "TAGGED_RELEASE_BANNER=\"homebrew-julia release\""
 
     # Tell julia about our gfortran
@@ -80,20 +69,6 @@ class JuliaHead < Formula
     # Tell julia where the default software base is, mostly for suitesparse
     build_opts << "LOCALBASE=#{prefix}"
 
-    # Make sure we have space to muck around with RPATHS
-    # ENV['LDFLAGS'] += " -L/usr/local/opt/llvm/lib -L/usr/local/lib -L/usr/lib -headerpad_max_install_names"
-    # ENV['CPPFLAGS'] += "  -I/usr/local/opt/llvm/include"
-    # ENV['CFLAGS'] += " -I/usr/local/opt/llvm/include"
-
-    # ENV['CC'] = "/usr/local/opt/llvm/bin/clang"
-    # ENV['CXX'] = "/usr/local/opt/llvm/bin/clang++"
-    # ENV["LD"] = "/usr/local/opt/llvm/bin/ld64.lld"
-    # ENV["RANLIB"] = "/usr/local/opt/llvm/bin/llvm-ranlib"
-    # ENV["AR"] = "/usr/local/opt/llvm/bin/llvm-ar"
-    # ENV["OBJDUMP"] = "/usr/local/opt/llvm/bin/llvm-objdump"
-    # ENV["NM"] = "/usr/local/opt/llvm/bin/llvm-nm"
-
-
     # Make sure Julia uses clang if the environment supports it
     build_opts << "USECLANG=1" if ENV.compiler == :clang
     build_opts << "VERBOSE=1" # if ARGV.verbose?
@@ -108,24 +83,6 @@ class JuliaHead < Formula
       build_opts << "USE_SYSTEM_#{dep}=1"
     end
 
-    # build_opts << "USE_LLVM_SHLIB=1"
-
-    # build_opts << "USE_SYSTEM_LIBM=1" if build.include? "system-libm"
-    # build_opts << "USE_SYSTEM_LIBM=1" # if build.include? "system-libm"
-
-    # If we're building a bottle, cut back on fancy CPU instructions
-    # build_opts << "MARCH=core2" if build.bottle?
-
-    # call makefile to grab suitesparse libraries
-    # system "make", "-j", "1" ,"-C", "contrib", "-f", "repackage_system_suitesparse4.make", *build_opts
-
-    # Sneak in the fftw libraries, as julia doesn't know how to load dylibs from any place other than
-    # julia's usr/lib directory and system default paths yet; the build process fixes that after the
-    # install step, but the bootstrapping process requires the use of the fftw libraries before then
-    # ['', 'f', '_threads', 'f_threads'].each do |ext|
-    #   ln_s "#{Formula['fftw'].lib}/libfftw3#{ext}.dylib", "usr/lib/"
-    # end
-    # # Do the same for openblas, pcre, mpfr, and gmp
     mkdir_p "usr/lib"
     mkdir_p "usr/lib/julia"
 
@@ -137,11 +94,7 @@ class JuliaHead < Formula
     ln_s "#{Formula['libgit2'].lib}/libgit2.dylib", "usr/lib/"
     ln_s "#{Formula['utf8proc'].opt_lib}/libutf8proc.a", "usr/lib/"
 
-    # build_opts << "release"
-    # build_opts << "debug"
     system "make", "-j", "1", *build_opts
-    # build_opts.pop
-    # build_opts.pop
 
     # Install!
     build_opts << "install"
@@ -152,18 +105,8 @@ class JuliaHead < Formula
     # We add in some custom RPATHs to julia
     rpaths = []
 
-    # # Add in each key-only formula to the rpaths list
-    # ['arpack-julia', 'suite-sparse-julia', 'openblas-julia'].each do |formula|
-    #   rpaths << "#{Formula[formula].opt_lib}"
-    # end
-
     # Add in generic Homebrew and system paths, as it might not be standard system paths
     rpaths << "#{HOMEBREW_PREFIX}/lib"
-
-    # # Only add this in if we're < 10.8, because after that libxstub makes our lives miserable
-    # if MacOS.version < :mountain_lion
-    #   rpaths << "/usr/X11/lib"
-    # end
 
     # Add those rpaths to the binaries
     rpaths.each do |rpath|
@@ -212,92 +155,3 @@ class JuliaHead < Formula
     EOS
   end
 end
-
-# __END__
-# diff --git a/Makefile b/Makefile
-# index d9c8c5c..f3a7288 100644
-# --- a/Makefile
-# +++ b/Makefile
-# @@ -234,7 +234,7 @@ JL_PRIVATE_LIBS-$(USE_SYSTEM_CURL) += libcurl
-#  JL_PRIVATE_LIBS-$(USE_SYSTEM_LIBGIT2) += libgit2
-#  JL_PRIVATE_LIBS-$(USE_SYSTEM_ARPACK) += libarpack
-#  ifeq ($(USE_LLVM_SHLIB),1)
-# -JL_PRIVATE_LIBS-$(USE_SYSTEM_LLVM) += libLLVM
-# +JL_PRIVATE_LIBS-$(USE_SYSTEM_LLVM) +=
-#  endif
-#
-#  ifeq ($(USE_SYSTEM_OPENLIBM),0)
-# diff --git a/base/version_git.sh b/base/version_git.sh
-# index 5335c8f..0e74afa 100644
-# --- a/base/version_git.sh
-# +++ b/base/version_git.sh
-# @@ -47,7 +47,7 @@ if [ $verchanged = 0000000000000000000000000000000000000000 ]; then
-#      # uncommited change to VERSION
-#      build_number=0
-#  else
-# -    build_number=$(git rev-list --count HEAD "^$verchanged")
-# +    build_number=$(git rev-list --count HEAD)
-#  fi
-#
-#  date_string=$git_time
-# @@ -68,7 +68,7 @@ if [ $(git describe --tags --exact-match 2> /dev/null) ]; then
-#  else
-#      tagged_commit="false"
-#  fi
-# -fork_master_distance=$(git rev-list HEAD ^"$(echo $origin)master" | wc -l | sed -e 's/[^[:digit:]]//g')
-# +fork_master_distance=$(git rev-list HEAD | wc -l | sed -e 's/[^[:digit:]]//g')
-#  fork_master_timestamp=$(git show -s $(git merge-base HEAD $(echo $origin)master) --format=format:"%ct")
-#
-#  # Check for errrors and emit default value for missing numbers.
-# diff --git a/src/Makefile b/src/Makefile
-# index 257152d..8da9e29 100644
-# --- a/src/Makefile
-# +++ b/src/Makefile
-# @@ -89,9 +89,9 @@ ifeq ($(JULIACODEGEN),LLVM)
-#  # In LLVM < 3.4, --ldflags includes both options and libraries, so use it both before and after --libs
-#  # In LLVM >= 3.4, --ldflags has only options, and --system-libs has the libraries.
-#  ifneq ($(USE_LLVM_SHLIB),1)
-# -LLVMLINK += $(shell $(LLVM_CONFIG_HOST) --ldflags) $(shell $(LLVM_CONFIG_HOST) --libs $(LLVM_LIBS)) $(shell $(LLVM_CONFIG_HOST) --ldflags) $(shell $(LLVM_CONFIG_HOST) --system-libs 2> /dev/null)
-# +LLVMLINK += $(shell $(LLVM_CONFIG) --link-static --ldflags) $(shell $(LLVM_CONFIG) --link-static --libs $(LLVM_LIBS))  -ledit -lz -lcurses -lm -lxml2  $(shell $(LLVM_CONFIG) --link-static --ldflags) $(shell $(LLVM_CONFIG) --link-static --system-libs)
-#  else
-# -LLVMLINK += $(shell $(LLVM_CONFIG_HOST) --ldflags) -lLLVM
-# +LLVMLINK += $(shell $(LLVM_CONFIG) --link-static --ldflags) -ledit -lz -lcurses -lm -lxml2  $(shell $(LLVM_CONFIG) --link-static --libs $(LLVM_LIBS)) $(shell $(LLVM_CONFIG) --link-static --ldflags) $(shell $(LLVM_CONFIG) --link-static --system-libs)
-#  FLAGS += -DLLVM_SHLIB
-#  endif # USE_LLVM_SHLIB == 1
-#  endif
-
-# diff --git a/deps/Versions.make b/deps/Versions.make
-# index 0486758d2b..bc38c89160 100644
-# --- a/deps/Versions.make
-# +++ b/deps/Versions.make
-# @@ -6,7 +6,7 @@ ARPACK_VER = 3.3.0
-#  FFTW_VER = 3.3.6-pl1
-#  SUITESPARSE_VER = 4.4.5
-#  UNWIND_VER = 1.1-julia2
-# -OSXUNWIND_VER = 0.0.3
-# +OSXUNWIND_VER = master
-#  GMP_VER = 6.1.2
-#  MPFR_VER = 3.1.5
-#  PATCHELF_VER = 0.9
-#
-# diff --git a/deps/checksums/libosxunwind-0.0.3.tar.gz/sha512 b/deps/checksums/libosxunwind-0.0.3.tar.gz/sha512
-# index 27de36c88d..7ad8f59dc4 100644
-# --- a/deps/checksums/libosxunwind-0.0.3.tar.gz/sha512
-# +++ b/deps/checksums/libosxunwind-0.0.3.tar.gz/sha512
-# @@ -1 +1 @@
-# -64c57c297b6b3779ed7d675d3ebcf471247b0d15bb560fce631afd82229adb352d438cf71509ab076610c6867bcc9ee359cf609c0257e53bea431235ff1da349
-# +e0f5e3aeaa5c13610e5542c3b2400467986ea0303dc523f4a48533764f368399c5d8a87caade221b2b415783adfcd7fb6b6dcac1f38dd8a5f10beb090b2994a4
-#
-# diff --git a/deps/unwind.mk b/deps/unwind.mk
-# index 845086d95a..518086859d 100644
-# --- a/deps/unwind.mk
-# +++ b/deps/unwind.mk
-# @@ -75,7 +75,7 @@ check-unwind: $(BUILDDIR)/libunwind-$(UNWIND_VER)/build-checked
-#  OSXUNWIND_FLAGS := ARCH="$(ARCH)" CC="$(CC)" FC="$(FC)" AR="$(AR)" OS="$(OS)" USECLANG=$(USECLANG) USEGCC=$(USEGCC) CFLAGS="$(CFLAGS) -ggdb3 -O0" CXXFLAGS="$(CXXFLAGS) -ggdb3 -O0" SFLAGS="-ggdb3" LDFLAGS="$(LDFLAGS) -Wl,-macosx_version_min,10.7"
-#
-#  $(SRCDIR)/srccache/libosxunwind-$(OSXUNWIND_VER).tar.gz: | $(SRCDIR)/srccache
-# -	$(JLDOWNLOAD) $@ https://github.com/JuliaLang/libosxunwind/archive/v$(OSXUNWIND_VER).tar.gz
-# +	$(JLDOWNLOAD) $@ https://github.com/JuliaLang/libosxunwind/archive/master.tar.gz
-#
-#  $(BUILDDIR)/libosxunwind-$(OSXUNWIND_VER)/source-extracted: $(SRCDIR)/srccache/libosxunwind-$(OSXUNWIND_VER).tar.gz
-#  	$(JLCHECKSUM) $<
