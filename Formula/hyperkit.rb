@@ -99,5 +99,3 @@ class Hyperkit < Formula
     system "expect", "test_hyperkit.exp"
   end
 end
-
-

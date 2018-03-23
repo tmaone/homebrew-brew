@@ -10,8 +10,8 @@ class CodesignRequirement < Requirement
 
   def message
     <<~EOS
-      lldb_codesign identity must be available to build with LLDB.
-      See: https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt
+    lldb_codesign identity must be available to build with LLDB.
+    See: https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt
     EOS
   end
 end
@@ -21,79 +21,77 @@ class Llvm < Formula
   homepage "https://llvm.org/"
 
   stable do
-    url "http://prereleases.llvm.org/6.0.0/rc3/llvm-6.0.0rc3.src.tar.xz"
-    sha256 "8af454fc8b2c1b12b5ea06b192d9cd601623ac19fdebea95c6f1cf37d3c91c83"
+    url "https://releases.llvm.org/6.0.0/llvm-6.0.0.src.tar.xz"
+    sha256 "1ff53c915b4e761ef400b803f07261ade637b0c269d99569f18040f3dcee4408"
 
     resource "clang" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/cfe-6.0.0rc3.src.tar.xz"
-      sha256 "03a1ef6afd35057f38ea6882f9e5c41c47de95bf626e9ef53a5efecf4611bddb"
+      url "https://releases.llvm.org/6.0.0/cfe-6.0.0.src.tar.xz"
+      sha256 "e07d6dd8d9ef196cfc8e8bb131cbd6a2ed0b1caf1715f9d05b0f0eeaddb6df32"
     end
 
     resource "clang-extra-tools" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/clang-tools-extra-6.0.0rc3.src.tar.xz"
-      sha256 "8ecea22b939cc2581cab25752f5635208dd8ab37d5c742bba040eacb10cd6763"
+      url "https://releases.llvm.org/6.0.0/clang-tools-extra-6.0.0.src.tar.xz"
+      sha256 "053b424a4cd34c9335d8918734dd802a8da612d13a26bbb88fcdf524b2d989d2"
     end
 
     resource "compiler-rt" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/compiler-rt-6.0.0rc3.src.tar.xz"
-      sha256 "9bd30c7cf2f815751ad0e10b216925b0d9760f11d84e79948e5703cbb9ea65d3"
+      url "https://releases.llvm.org/6.0.0/compiler-rt-6.0.0.src.tar.xz"
+      sha256 "d0cc1342cf57e9a8d52f5498da47a3b28d24ac0d39cbc92308781b3ee0cea79a"
     end
 
     # Only required to build & run Compiler-RT tests on macOS, optional otherwise.
     # https://clang.llvm.org/get_started.html
     resource "libcxx" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/libcxx-6.0.0rc3.src.tar.xz"
-      sha256 "4a479c45fce60f4029fe88fcac4c18f6fad7a5bfdca16057f78d23547adf76b7"
+      url "https://releases.llvm.org/6.0.0/libcxx-6.0.0.src.tar.xz"
+      sha256 "70931a87bde9d358af6cb7869e7535ec6b015f7e6df64def6d2ecdd954040dd9"
     end
 
     resource "libcxxabi" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/libcxxabi-6.0.0rc3.src.tar.xz"
-      sha256 "19d86438483980787d753a6c3ba84a8d4b278ddde0d2487133997716d4e1a112"
+      url "http://releases.llvm.org/6.0.0/libcxxabi-6.0.0.src.tar.xz"
+      sha256 "91c6d9c5426306ce28d0627d6a4448e7d164d6a3f64b01cb1d196003b16d641b"
     end
 
     resource "libunwind" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/libunwind-6.0.0rc3.src.tar.xz"
-      sha256 "aa4981ddd54c6c7d8dbdf83756eda65f1cc07f86a6eb36623bb4fb9b6d11269c"
+      url "https://releases.llvm.org/6.0.0/libunwind-6.0.0.src.tar.xz"
+      sha256 "256c4ed971191bde42208386c8d39e5143fa4afd098e03bd2c140c878c63f1d6"
     end
 
     resource "lld" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/lld-6.0.0rc3.src.tar.xz"
-      sha256 "28796f5066f9c1ffcb06eec7c3b269417173ddf57c43f0f55876ce3144fcdf9a"
+      url "https://releases.llvm.org/6.0.0/lld-6.0.0.src.tar.xz"
+      sha256 "6b8c4a833cf30230c0213d78dbac01af21387b298225de90ab56032ca79c0e0b"
     end
 
     resource "lldb" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/lldb-6.0.0rc3.src.tar.xz"
-      sha256 "f407c517bec1ab233aeeb9f0e6f2e25387125f870f6d560190af855f759ff301"
-
-      # Fixes "error: no type named 'pid_t' in the global namespace"
-      # https://github.com/Homebrew/homebrew-core/issues/17839
-      # Already fixed in upstream trunk
-      # patch do
-      #  url "https://github.com/llvm-mirror/lldb/commit/324f93b5e30.patch?full_index=1"
-      #    sha256 "f23fc92c2d61bf6c8bc6865994a75264fafba6ae435e4d2f4cc8327004523fb1"
-      # end
+      url "https://releases.llvm.org/6.0.0/lldb-6.0.0.src.tar.xz"
+      sha256 "46f54c1d7adcd047d87c0179f7b6fa751614f339f4f87e60abceaa45f414d454"
     end
 
     resource "openmp" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/openmp-6.0.0rc3.src.tar.xz"
-      sha256 "b3e828599c836eb131d61b90d5fda794918157015934ebb128ac569dc1b1fad1"
+      url "https://releases.llvm.org/6.0.0/openmp-6.0.0.src.tar.xz"
+      sha256 "7c0e050d5f7da3b057579fb3ea79ed7dc657c765011b402eb5bbe5663a7c38fc"
     end
 
     resource "polly" do
-      url "http://prereleases.llvm.org/6.0.0/rc3/polly-6.0.0rc3.src.tar.xz"
-      sha256 "562b4836461274662e9fadc3e718ad863c51114323362cb088c1bffd0cfd2d2d"
+      url "https://releases.llvm.org/6.0.0/polly-6.0.0.src.tar.xz"
+      sha256 "47e493a799dca35bc68ca2ceaeed27c5ca09b12241f87f7220b5f5882194f59c"
     end
+
+    resource "binary" do
+      url "http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-apple-darwin.tar.xz"
+      sha256 "0ef8e99e9c9b262a53ab8f2821e2391d041615dd3f3ff36fdf5370916b0f4268"
+    end
+
   end
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "61c8f073f3fc25971ead1a106f4db95db08b4ba0cd1eb7df7c40f6a2ee74dfbb" => :high_sierra
-    sha256 "da1ffc015d980daaa72affabbadfa4b1b821989f50ea14f5fea7d799eee018e8" => :sierra
-    sha256 "54c1d217622fd298186bad4af680d2ac3aafc237948d581ad1ecb221bc293b38" => :el_capitan
+    sha256 "6e8c461f99e8b2725bb9c34d7fc548490f1e74f162f75f3670e0bd759dcbd473" => :high_sierra
+    sha256 "3603e0a48860d079c9cdf32c6f65f87758bbfca4ab9aa6e2eb8b4d47a7751688" => :sierra
+    sha256 "2ce6aed36aab360b9ec09c094727c76c6620bcf201802f5d5d59035c7e6c80f2" => :el_capitan
   end
 
   head do
+
     url "https://llvm.org/git/llvm.git"
 
     resource "clang" do
@@ -135,32 +133,21 @@ class Llvm < Formula
     resource "polly" do
       url "https://llvm.org/git/polly.git"
     end
+
   end
 
-  keg_only :provided_by_macos
+  # keg_only :provided_by_macos
 
-  option "without-compiler-rt", "Do not build Clang runtime support libraries for code sanitizers, builtins, and profiling"
-  option "without-libcxx", "Do not build libc++ standard library"
   option "with-toolchain", "Build with Toolchain to facilitate overriding system compiler"
-  option "with-lldb", "Build LLDB debugger"
-  option "with-python", "Build bindings against custom Python"
   option "with-shared-libs", "Build shared instead of static libraries"
-  option "without-libffi", "Do not use libffi to call external functions"
+  option "with-lldb", "Build lldb"
+  option "with-binary", "Fetch binary release from LLVM"
 
-  # https://llvm.org/docs/GettingStarted.html#requirement
-  depends_on "libffi" => :recommended
-
-  # for the 'dot' tool (lldb)
-  depends_on "graphviz" => :optional
-
-  depends_on "ocaml" => :optional
-  if build.with? "ocaml"
-    depends_on "opam" => :build
-    depends_on "pkg-config" => :build
-  end
-  
-  depends_on "python" => :build
   depends_on "cmake" => :build
+  depends_on "libffi" => :build
+  depends_on "pkg-config" => :build
+  depends_on "graphviz"
+  depends_on "python" => :build
   depends_on "ninja" => :build
 
   if build.with? "lldb"
@@ -175,186 +162,123 @@ class Llvm < Formula
     fails_with :gcc => n
   end
 
-  def build_libcxx?
-    build.with?("libcxx") || !MacOS::CLT.installed?
-  end
-
   def install
-    # Apple's libstdc++ is too old to build LLVM
-    ENV.libcxx if ENV.compiler == :clang
 
-    ENV.prepend_path "PATH", Formula["python"].opt_bin/"bin"
+    if !build.with? "binary"
 
-    (buildpath/"tools/clang").install resource("clang")
-    (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
-    (buildpath/"projects/openmp").install resource("openmp")
-    (buildpath/"projects/libcxx").install resource("libcxx")
-    (buildpath/"projects/libcxxabi").install resource("libcxxabi")
-    (buildpath/"projects/libunwind").install resource("libunwind")
-    (buildpath/"tools/lld").install resource("lld")
-    (buildpath/"tools/polly").install resource("polly")
+      # Apple's libstdc++ is too old to build LLVM
+      ENV.libcxx if ENV.compiler == :clang
+      ENV.permit_arch_flags
+      ENV.prepend_path "PATH", Formula["python"].opt_bin/"bin"
 
-    if build.with? "lldb"
-      pyhome = `python-config --prefix`.chomp
-      ENV["PYTHONHOME"] = pyhome
-      pylib = "#{pyhome}/lib/libpython3.6.dylib"
-      pyinclude = "#{pyhome}/include/python3.6m"        
-      (buildpath/"tools/lldb").install resource("lldb")
-
-      # Building lldb requires a code signing certificate.
-      # The instructions provided by llvm creates this certificate in the
-      # user's login keychain. Unfortunately, the login keychain is not in
-      # the search path in a superenv build. The following three lines add
-      # the login keychain to ~/Library/Preferences/com.apple.security.plist,
-      # which adds it to the superenv keychain search path.
-      mkdir_p "#{ENV["HOME"]}/Library/Preferences"
-      username = ENV["USER"]
-      system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
-    end
-
-    # if build.with? "compiler-rt"
+      (buildpath/"tools/clang").install resource("clang")
+      (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
+      (buildpath/"projects/openmp").install resource("openmp")
+      (buildpath/"projects/libcxx").install resource("libcxx")
+      (buildpath/"projects/libcxxabi").install resource("libcxxabi")
+      (buildpath/"projects/libunwind").install resource("libunwind")
+      (buildpath/"tools/lld").install resource("lld")
+      (buildpath/"tools/polly").install resource("polly")
       (buildpath/"projects/compiler-rt").install resource("compiler-rt")
 
-      # compiler-rt has some iOS simulator features that require i386 symbols
-      # I'm assuming the rest of clang needs support too for 32-bit compilation
-      # to work correctly, but if not, perhaps universal binaries could be
-      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
-      # can almost be treated as an entirely different build from llvm.
-      ENV.permit_arch_flags
-    # end
+      if build.with? "lldb"
+        pyhome = `python-config --prefix`.chomp
+        ENV["PYTHONHOME"] = pyhome
+        pylib = "#{pyhome}/lib/libpython3.6.dylib"
+        pyinclude = "#{pyhome}/include/python3.6m"
+        (buildpath/"tools/lldb").install resource("lldb")
 
-    args = %w[
-      -DLLVM_OPTIMIZED_TABLEGEN=ON
-      -DLLVM_INCLUDE_DOCS=OFF
-      -DLLVM_ENABLE_RTTI=ON
-      -DLLVM_ENABLE_EH=ON
-      -DLLVM_INSTALL_UTILS=ON
-      -DWITH_POLLY=ON
-      -DLINK_POLLY_INTO_TOOLS=ON
-      -DLLVM_TARGETS_TO_BUILD=all
-    ]
-    args << "-DLIBOMP_ARCH=x86_64"
-    args << "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON"
-    args << "-DLLVM_CREATE_XCODE_TOOLCHAIN=ON"
-    args << "-DLLVM_BUILD_LLVM_DYLIB=ON"
-    args << "-DLLVM_ENABLE_LIBCXX=ON"
-
-    if build.with?("lldb") && build.with?("python")
-      args << "-DLLDB_RELOCATABLE_PYTHON=ON"
-      args << "-DPYTHON_LIBRARY=#{pylib}"
-      args << "-DPYTHON_INCLUDE_DIR=#{pyinclude}"
-      args << "-DPYTHON_EXECUTABLE=/usr/local/bin/python"
-    end
-
-    args << "-DLLVM_ENABLE_FFI=ON"
-    args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_lib}/libffi-#{Formula["libffi"].version}/include"
-    args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
-
-    mktemp do
-      if build.with? "ocaml"
-        #args << "-DLLVM_OCAML_INSTALL_PATH=#{lib}/ocaml"
-        ENV["OPAMYES"] = "1"
-        ENV["OPAMROOT"] = Pathname.pwd/"opamroot"
-        (Pathname.pwd/"opamroot").mkpath
-        system "opam", "init", "--no-setup"
-        system "opam", "config", "exec", "--",
-               "opam", "install", "ocamlfind", "ctypes"
-        system "opam", "config", "exec", "--",
-               "cmake", "-G", "Ninja", buildpath, *(std_cmake_args + args)
-      else
-        system "cmake", "-G", "Ninja", buildpath, *(std_cmake_args + args)
+        # Building lldb requires a code signing certificate.
+        # The instructions provided by llvm creates this certificate in the
+        # user's login keychain. Unfortunately, the login keychain is not in
+        # the search path in a superenv build. The following three lines add
+        # the login keychain to ~/Library/Preferences/com.apple.security.plist,
+        # which adds it to the superenv keychain search path.
+        mkdir_p "#{ENV["HOME"]}/Library/Preferences"
+        username = ENV["USER"]
+        system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
       end
-      system "ninja"
-      system "ninja", "install"
-      system "ninja", "install-xcode-toolchain" if build.with? "toolchain"
+
+      args = %w[
+        -DLLVM_OPTIMIZED_TABLEGEN=ON
+        -DLLVM_INCLUDE_DOCS=OFF
+        -DLLVM_ENABLE_RTTI=ON
+        -DLLVM_ENABLE_EH=ON
+        -DLLVM_INSTALL_UTILS=ON
+        -DWITH_POLLY=ON
+        -DLINK_POLLY_INTO_TOOLS=ON
+        -DLLVM_TARGETS_TO_BUILD=all
+      ]
+
+      args << "-DLIBOMP_ARCH=x86_64"
+      args << "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON"
+      args << "-DLLVM_CREATE_XCODE_TOOLCHAIN=OFF"
+      args << "-DLLVM_BUILD_LLVM_DYLIB=OFF"
+      args << "-DLLVM_ENABLE_LIBCXX=ON"
+      args << "-DLLVM_ENABLE_LIBCXXABI=ON"
+      args << "-DLLVM_ENABLE_ASSERTIONS=OFF"
+      args << "-DLLVM_ENABLE_THREADS=ON"
+
+      if build.with?("lldb") && build.with?("python")
+        args << "-DLLDB_RELOCATABLE_PYTHON=ON"
+        args << "-DPYTHON_LIBRARY=#{pylib}"
+        args << "-DPYTHON_INCLUDE_DIR=#{pyinclude}"
+        args << "-DPYTHON_EXECUTABLE=/usr/local/bin/python"
+      end
+
+      args << "-DLLVM_ENABLE_FFI=ON"
+      args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_lib}/libffi-#{Formula["libffi"].version}/include"
+      args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
+
+      mktemp do
+        system "cmake", "-G", "Ninja", buildpath, *(std_cmake_args + args)
+        system "ninja"
+        system "ninja", "install"
+        # system "ninja", "install-xcode-toolchain"
+      end
+
+      (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
+      (share/"cmake").install "cmake/modules"
+      inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+      bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
+      man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
+
+      # install llvm python bindings
+      (lib/"python3.6/site-packages").install buildpath/"bindings/python/llvm"
+      (lib/"python3.6/site-packages").install buildpath/"tools/clang/bindings/python/clang"
     end
 
-    (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
-    (share/"cmake").install "cmake/modules"
-    inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
-    bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
-    man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
+  else
 
-    # install llvm python bindings
-    (lib/"python3.6/site-packages").install buildpath/"bindings/python/llvm"
-    (lib/"python3.6/site-packages").install buildpath/"tools/clang/bindings/python/clang"
+    resource("binary").stage do
+       cp_r Dir["*"], prefix
+    end
+
   end
 
   def caveats
-    if build_libcxx?
-      <<~EOS
-        To use the bundled libc++ please add the following LDFLAGS:
-          LDFLAGS="-L#{opt_lib} -Wl,-rpath,#{opt_lib}"
-      EOS
-    end
+    <<~EOS
+    To use the bundled libc++ please add the following LDFLAGS:
+    LDFLAGS="-L#{opt_lib} -Wl,-rpath,#{opt_lib}"
+    EOS
   end
 
   test do
-    assert_equal prefix.to_s, shell_output("#{bin}/llvm-config --prefix").chomp
-
-    (testpath/"omptest.c").write <<~EOS
-      #include <stdlib.h>
-      #include <stdio.h>
-      #include <omp.h>
-
-      int main() {
-          #pragma omp parallel num_threads(4)
-          {
-            printf("Hello from thread %d, nthreads %d\\n", omp_get_thread_num(), omp_get_num_threads());
-          }
-          return EXIT_SUCCESS;
-      }
-    EOS
-
-    system "#{bin}/clang", "-L#{lib}", "-fopenmp", "-nobuiltininc",
-                           "-I#{lib}/clang/#{version}/include",
-                           "omptest.c", "-o", "omptest"
-    testresult = shell_output("./omptest")
-
-    sorted_testresult = testresult.split("\n").sort.join("\n")
-    expected_result = <<~EOS
-      Hello from thread 0, nthreads 4
-      Hello from thread 1, nthreads 4
-      Hello from thread 2, nthreads 4
-      Hello from thread 3, nthreads 4
-    EOS
-    assert_equal expected_result.strip, sorted_testresult.strip
-
-    (testpath/"test.c").write <<~EOS
-      #include <stdio.h>
-
-      int main()
-      {
-        printf("Hello World!\\n");
-        return 0;
-      }
-    EOS
-
-    (testpath/"test.cpp").write <<~EOS
-      #include <iostream>
-
-      int main()
-      {
-        std::cout << "Hello World!" << std::endl;
-        return 0;
-      }
-    EOS
-
     # Testing Command Line Tools
     if MacOS::CLT.installed?
       libclangclt = Dir["/Library/Developer/CommandLineTools/usr/lib/clang/#{MacOS::CLT.version.to_i}*"].last { |f| File.directory? f }
 
       system "#{bin}/clang++", "-v", "-nostdinc",
-              "-I/Library/Developer/CommandLineTools/usr/include/c++/v1",
-              "-I#{libclangclt}/include",
-              "-I/usr/include", # need it because /Library/.../usr/include/c++/v1/iosfwd refers to <wchar.h>, which CLT installs to /usr/include
-              "test.cpp", "-o", "testCLT++"
+      "-I/Library/Developer/CommandLineTools/usr/include/c++/v1",
+      "-I#{libclangclt}/include",
+      "-I/usr/include", # need it because /Library/.../usr/include/c++/v1/iosfwd refers to <wchar.h>, which CLT installs to /usr/include
+      "test.cpp", "-o", "testCLT++"
       assert_includes MachO::Tools.dylibs("testCLT++"), "/usr/lib/libc++.1.dylib"
       assert_equal "Hello World!", shell_output("./testCLT++").chomp
 
       system "#{bin}/clang", "-v", "-nostdinc",
-              "-I/usr/include", # this is where CLT installs stdio.h
-              "test.c", "-o", "testCLT"
+      "-I/usr/include", # this is where CLT installs stdio.h
+      "test.c", "-o", "testCLT"
       assert_equal "Hello World!", shell_output("./testCLT").chomp
     end
 
@@ -363,16 +287,16 @@ class Llvm < Formula
       libclangxc = Dir["#{MacOS::Xcode.toolchain_path}/usr/lib/clang/#{DevelopmentTools.clang_version}*"].last { |f| File.directory? f }
 
       system "#{bin}/clang++", "-v", "-nostdinc",
-              "-I#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1",
-              "-I#{libclangxc}/include",
-              "-I#{MacOS.sdk_path}/usr/include",
-              "test.cpp", "-o", "testXC++"
+      "-I#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1",
+      "-I#{libclangxc}/include",
+      "-I#{MacOS.sdk_path}/usr/include",
+      "test.cpp", "-o", "testXC++"
       assert_includes MachO::Tools.dylibs("testXC++"), "/usr/lib/libc++.1.dylib"
       assert_equal "Hello World!", shell_output("./testXC++").chomp
 
       system "#{bin}/clang", "-v", "-nostdinc",
-              "-I#{MacOS.sdk_path}/usr/include",
-              "test.c", "-o", "testXC"
+      "-I#{MacOS.sdk_path}/usr/include",
+      "test.c", "-o", "testXC"
       assert_equal "Hello World!", shell_output("./testXC").chomp
     end
 
@@ -380,14 +304,16 @@ class Llvm < Formula
     # related to https://github.com/Homebrew/legacy-homebrew/issues/47149
     if build_libcxx?
       system "#{bin}/clang++", "-v", "-nostdinc",
-              "-std=c++11", "-stdlib=libc++",
-              "-I#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1",
-              "-I#{libclangxc}/include",
-              "-I#{MacOS.sdk_path}/usr/include",
-              "-L#{lib}",
-              "-Wl,-rpath,#{lib}", "test.cpp", "-o", "test"
+      "-std=c++11", "-stdlib=libc++",
+      "-I#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1",
+      "-I#{libclangxc}/include",
+      "-I#{MacOS.sdk_path}/usr/include",
+      "-L#{lib}",
+      "-Wl,-rpath,#{lib}", "test.cpp", "-o", "test"
       assert_includes MachO::Tools.dylibs("test"), "#{opt_lib}/libc++.1.dylib"
       assert_equal "Hello World!", shell_output("./test").chomp
     end
+
   end
+
 end

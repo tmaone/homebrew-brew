@@ -25,8 +25,8 @@ class BashstyleNg < Formula
   depends_on "gnu-sed"
   depends_on "ghostscript"
   depends_on "xmlindent"
-  
-  depends_on :python3
+
+  depends_on "python3"
   # depends_on "python-gettext" => :python
   # depends_on "configobj" => :python
   # depends_on "shutil" => :python
@@ -35,7 +35,7 @@ class BashstyleNg < Formula
    url "https://pypi.python.org/packages/80/a7/a4a5cf3aa9500dbb09b48dae6d4d9581883dd90ae7a84cbb2d3448410114/python-gettext-3.0.zip"
    sha256 "f40540324edc600e33df7aaf840aec7a4021d3b0615830918c231eb1d7163456"
   end
-  
+
   resource "configobj" do
    url "https://pypi.python.org/packages/64/61/079eb60459c44929e684fa7d9e2fdca403f67d64dd9dbac27296be2e0fab/configobj-5.0.6.tar.gz"
    sha256 "a2f5650770e1c87fb335af19a9b7eb73fc05ccf22144eb68db7d00cd2bcb0902"
