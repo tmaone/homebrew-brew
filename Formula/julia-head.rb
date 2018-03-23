@@ -21,12 +21,12 @@ class JuliaHead < Formula
 
   bottle :unneeded
 
+  depends_on "tmaone/metap/openlibm" => :build
   depends_on "cmake" => :build
   depends_on "make" => :build
   depends_on "llvm" => :build
   depends_on "openblas" => :build
-  depends_on "tmaone/metap/openlibm" => :build
-  depends_on "utf8proc"
+  depends_on "utf8proc" => :build
   depends_on "curl" => :build
   depends_on "pcre2" => :build
   depends_on "gmp" => :build
@@ -37,24 +37,26 @@ class JuliaHead < Formula
   depends_on "libssh2" => :build
   depends_on "arpack" => :build
   depends_on "lapack" => :build
+  depends_on "libxml2" => :build
+  depends_on "libedit" => :build
   depends_on "suite-sparse" => :build
   depends_on "mbedtls" => :build
 
   # Need this as Julia's build process is quite messy with respect to env variables
   env :std
+  ARGV << "--HEAD"
+  ARGV << "--verbose"
 
-  # Options that can be passed to the build process
-  option "system-libm", "Use system's libm instead of openlibm"
-
-  # # Here we build up a list of patches to be applied
+  # # # Here we build up a list of patches to be applied
   # def patches
   #   patch_list = []
   #   # patch :DATA
   #   # This patch ensures that suitesparse libraries are installed
-  #   patch_list << "https://gist.githubusercontent.com/timxzl/c6f474fa387382267723/raw/2ecb0270d83f0a167358ff2a396cd6004e1b02a0/Makefile.diff"
+  #   # patch_list << "https://gist.githubusercontent.com/timxzl/c6f474fa387382267723/raw/2ecb0270d83f0a167358ff2a396cd6004e1b02a0/Makefile.diff"
   #   patch_list << :DATA
   #   return patch_list
   # end
+
 
   def install
     ENV['PLATFORM'] = 'darwin'
@@ -62,7 +64,7 @@ class JuliaHead < Formula
 
     # Build up list of build options
     build_opts = ["prefix=#{prefix}"]
-    build_opts << "USE_BLAS64=0"
+    # build_opts << "USE_BLAS64=0"
     build_opts << "TAGGED_RELEASE_BANNER=\"homebrew-julia release\""
 
     # Tell julia about our gfortran
@@ -74,23 +76,22 @@ class JuliaHead < Formula
     # Tell julia about our llvm-config, since it's been named nonstandardly
     build_opts << "LLVM_CONFIG=llvm-config"
     build_opts << "LLVM_VER=6.0.0"
-    # ENV["CPPFLAGS"] += " -DUSE_ORCJIT "
 
     # Tell julia where the default software base is, mostly for suitesparse
     build_opts << "LOCALBASE=#{prefix}"
 
     # Make sure we have space to muck around with RPATHS
-    ENV['LDFLAGS'] += " -L/usr/local/opt/llvm/lib -L/usr/local/lib -L/usr/lib -headerpad_max_install_names"
-    ENV['CPPFLAGS'] += "  -I/usr/local/opt/llvm/include"
-    ENV['CFLAGS'] += " -I/usr/local/opt/llvm/include"
+    # ENV['LDFLAGS'] += " -L/usr/local/opt/llvm/lib -L/usr/local/lib -L/usr/lib -headerpad_max_install_names"
+    # ENV['CPPFLAGS'] += "  -I/usr/local/opt/llvm/include"
+    # ENV['CFLAGS'] += " -I/usr/local/opt/llvm/include"
 
-    ENV['CC'] = "/usr/local/opt/llvm/bin/clang"
-    ENV['CXX'] = "/usr/local/opt/llvm/bin/clang++"
-    # ENV["LD"] = "/usr/local/opt/llvm/bin/ld"
-    ENV["RANLIB"] = "/usr/local/opt/llvm/bin/llvm-ranlib"
-    ENV["AR"] = "/usr/local/opt/llvm/bin/llvm-ar"
-    ENV["OBJDUMP"] = "/usr/local/opt/llvm/bin/llvm-objdump"
-    ENV["NM"] = "/usr/local/opt/llvm/bin/llvm-nm"
+    # ENV['CC'] = "/usr/local/opt/llvm/bin/clang"
+    # ENV['CXX'] = "/usr/local/opt/llvm/bin/clang++"
+    # ENV["LD"] = "/usr/local/opt/llvm/bin/ld64.lld"
+    # ENV["RANLIB"] = "/usr/local/opt/llvm/bin/llvm-ranlib"
+    # ENV["AR"] = "/usr/local/opt/llvm/bin/llvm-ar"
+    # ENV["OBJDUMP"] = "/usr/local/opt/llvm/bin/llvm-objdump"
+    # ENV["NM"] = "/usr/local/opt/llvm/bin/llvm-nm"
 
 
     # Make sure Julia uses clang if the environment supports it
@@ -106,6 +107,8 @@ class JuliaHead < Formula
     ['FFTW', 'GLPK', 'GMP', 'LLVM', 'PCRE', 'BLAS', 'LAPACK', 'SUITESPARSE', 'ARPACK', 'MPFR', 'LIBGIT2', 'LIBUNWIND', 'OPENLIBM', 'MBEDTLS', 'LIBSSH2', 'CURL'].each do |dep|
       build_opts << "USE_SYSTEM_#{dep}=1"
     end
+
+    # build_opts << "USE_LLVM_SHLIB=1"
 
     # build_opts << "USE_SYSTEM_LIBM=1" if build.include? "system-libm"
     # build_opts << "USE_SYSTEM_LIBM=1" # if build.include? "system-libm"
@@ -123,23 +126,22 @@ class JuliaHead < Formula
     #   ln_s "#{Formula['fftw'].lib}/libfftw3#{ext}.dylib", "usr/lib/"
     # end
     # # Do the same for openblas, pcre, mpfr, and gmp
-    # ln_s "#{Formula['openblas-julia'].opt_lib}/libopenblas.dylib", "usr/lib/"
-    # ln_s "#{Formula['arpack-julia'].opt_lib}/libarpack.dylib", "usr/lib/"
-    # ln_s "#{Formula['pcre2'].lib}/libpcre2-8.dylib", "usr/lib/"
-    # ln_s "#{Formula['mpfr'].lib}/libmpfr.dylib", "usr/lib/"
-    # ln_s "#{Formula['gmp'].lib}/libgmp.dylib", "usr/lib/"
-    # ln_s "#{Formula['openblas-julia'].opt_lib}/libopenblas.dylib", "usr/lib/"
-    # ln_s "#{Formula['libgit2'].lib}/libgit2.dylib", "usr/lib/"
-
     mkdir_p "usr/lib"
+    mkdir_p "usr/lib/julia"
 
+    ln_s "#{Formula['openblas'].opt_lib}/libopenblas.dylib", "usr/lib/julia/"
+    ln_s "#{Formula['arpack'].opt_lib}/libarpack.dylib", "usr/lib/julia/"
+    ln_s "#{Formula['pcre2'].lib}/libpcre2-8.dylib", "usr/lib/"
+    ln_s "#{Formula['mpfr'].lib}/libmpfr.dylib", "usr/lib/"
+    ln_s "#{Formula['gmp'].lib}/libgmp.dylib", "usr/lib/"
+    ln_s "#{Formula['libgit2'].lib}/libgit2.dylib", "usr/lib/"
     ln_s "#{Formula['utf8proc'].opt_lib}/libutf8proc.a", "usr/lib/"
 
-    build_opts << "release"
-    build_opts << "debug"
+    # build_opts << "release"
+    # build_opts << "debug"
     system "make", "-j", "1", *build_opts
-    build_opts.pop
-    build_opts.pop
+    # build_opts.pop
+    # build_opts.pop
 
     # Install!
     build_opts << "install"
@@ -211,7 +213,59 @@ class JuliaHead < Formula
   end
 end
 
-__END__
+# __END__
+# diff --git a/Makefile b/Makefile
+# index d9c8c5c..f3a7288 100644
+# --- a/Makefile
+# +++ b/Makefile
+# @@ -234,7 +234,7 @@ JL_PRIVATE_LIBS-$(USE_SYSTEM_CURL) += libcurl
+#  JL_PRIVATE_LIBS-$(USE_SYSTEM_LIBGIT2) += libgit2
+#  JL_PRIVATE_LIBS-$(USE_SYSTEM_ARPACK) += libarpack
+#  ifeq ($(USE_LLVM_SHLIB),1)
+# -JL_PRIVATE_LIBS-$(USE_SYSTEM_LLVM) += libLLVM
+# +JL_PRIVATE_LIBS-$(USE_SYSTEM_LLVM) +=
+#  endif
+#
+#  ifeq ($(USE_SYSTEM_OPENLIBM),0)
+# diff --git a/base/version_git.sh b/base/version_git.sh
+# index 5335c8f..0e74afa 100644
+# --- a/base/version_git.sh
+# +++ b/base/version_git.sh
+# @@ -47,7 +47,7 @@ if [ $verchanged = 0000000000000000000000000000000000000000 ]; then
+#      # uncommited change to VERSION
+#      build_number=0
+#  else
+# -    build_number=$(git rev-list --count HEAD "^$verchanged")
+# +    build_number=$(git rev-list --count HEAD)
+#  fi
+#
+#  date_string=$git_time
+# @@ -68,7 +68,7 @@ if [ $(git describe --tags --exact-match 2> /dev/null) ]; then
+#  else
+#      tagged_commit="false"
+#  fi
+# -fork_master_distance=$(git rev-list HEAD ^"$(echo $origin)master" | wc -l | sed -e 's/[^[:digit:]]//g')
+# +fork_master_distance=$(git rev-list HEAD | wc -l | sed -e 's/[^[:digit:]]//g')
+#  fork_master_timestamp=$(git show -s $(git merge-base HEAD $(echo $origin)master) --format=format:"%ct")
+#
+#  # Check for errrors and emit default value for missing numbers.
+# diff --git a/src/Makefile b/src/Makefile
+# index 257152d..8da9e29 100644
+# --- a/src/Makefile
+# +++ b/src/Makefile
+# @@ -89,9 +89,9 @@ ifeq ($(JULIACODEGEN),LLVM)
+#  # In LLVM < 3.4, --ldflags includes both options and libraries, so use it both before and after --libs
+#  # In LLVM >= 3.4, --ldflags has only options, and --system-libs has the libraries.
+#  ifneq ($(USE_LLVM_SHLIB),1)
+# -LLVMLINK += $(shell $(LLVM_CONFIG_HOST) --ldflags) $(shell $(LLVM_CONFIG_HOST) --libs $(LLVM_LIBS)) $(shell $(LLVM_CONFIG_HOST) --ldflags) $(shell $(LLVM_CONFIG_HOST) --system-libs 2> /dev/null)
+# +LLVMLINK += $(shell $(LLVM_CONFIG) --link-static --ldflags) $(shell $(LLVM_CONFIG) --link-static --libs $(LLVM_LIBS))  -ledit -lz -lcurses -lm -lxml2  $(shell $(LLVM_CONFIG) --link-static --ldflags) $(shell $(LLVM_CONFIG) --link-static --system-libs)
+#  else
+# -LLVMLINK += $(shell $(LLVM_CONFIG_HOST) --ldflags) -lLLVM
+# +LLVMLINK += $(shell $(LLVM_CONFIG) --link-static --ldflags) -ledit -lz -lcurses -lm -lxml2  $(shell $(LLVM_CONFIG) --link-static --libs $(LLVM_LIBS)) $(shell $(LLVM_CONFIG) --link-static --ldflags) $(shell $(LLVM_CONFIG) --link-static --system-libs)
+#  FLAGS += -DLLVM_SHLIB
+#  endif # USE_LLVM_SHLIB == 1
+#  endif
+
 # diff --git a/deps/Versions.make b/deps/Versions.make
 # index 0486758d2b..bc38c89160 100644
 # --- a/deps/Versions.make
