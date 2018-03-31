@@ -1,16 +1,17 @@
 class Afsctool < Formula
   desc "Utility for manipulating HFS+ compressed files"
-  homepage "https://brkirch.wordpress.com/afsctool/"
-  url "https://github.com/RJVB/afsctool.git"
+  homepage "https://github.com/RJVB/afsctool.git"
+  url "https://github.com/RJVB/afsctool/archive/1.6.9.tar.gz"
   version "1.6.9"
-  sha256 ""
-  #revision 2
+  sha256 "8c0944737d04c337a627c410342ac9c780e03c96260415f97749d61b8cfcf4eb"
+  # revision 2
+
+  resource "sparsehash" do
+    url "https://github.com/sparsehash/sparsehash.git"
+  end
 
   head do
     url "https://github.com/RJVB/afsctool.git"
-    resource "sparsehash" do
-      url "https://github.com/sparsehash/sparsehash.git"
-    end
   end
 
   env :std
@@ -36,7 +37,7 @@ class Afsctool < Formula
     ENV.append_path "PKG_CONFIG_LIBDIR", "#{prefix}/lib/pkgconfig"
 
     mktemp do
-      
+
       system "cmake", "-G", "Ninja", buildpath, *(std_cmake_args)
       system "ninja"
       system "ninja", "install"

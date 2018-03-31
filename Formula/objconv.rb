@@ -3,6 +3,9 @@ class Objconv < Formula
   homepage "http://www.agner.org/optimize/"
   head "http://www.agner.org/optimize/objconv.zip"
 
+  ARGV << "--HEAD"
+	ARGV << "--verbose"
+  
   def install
     system "unzip", "source.zip"
     system "/bin/bash", "build.sh"
