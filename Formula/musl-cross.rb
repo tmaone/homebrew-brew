@@ -32,7 +32,7 @@ class MuslCross < Formula
   ARGV << "--HEAD"
   #ARGV << "--env=std"
   ARGV << "--verbose"
-  ARGV << "--debug"
+  #ARGV << "--debug"
   #https://github.com/michaelforney/musl-cross-make.git"
 
   resource "linux-4.4.10.tar.xz" do

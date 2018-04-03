@@ -7,7 +7,7 @@ class MuslCrossMips < Formula
   ARGV << "--HEAD"
   #ARGV << "--env=std"
   ARGV << "--verbose"
-  ARGV << "--debug"
+  #ARGV << "--debug"
 
   depends_on "gnu-sed" => :build
   depends_on "make" => :build
