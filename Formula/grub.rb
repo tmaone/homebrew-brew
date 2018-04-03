@@ -16,7 +16,23 @@ class Grub < Formula
   option "with-zfs", "enable libzfs integration"
 
   depends_on "tmaone/metap/objconv" => :build
+  depends_on "autoconf" if build.head?
 
+  if build.with? "mkfont"
+    depends_on "freetype" => :build
+  end
+
+  if build.with? "themes"
+    depends_on "freetype" => :build
+  end
+
+  if build.with? "lzma"
+    depends_on "xz" => :build
+  end
+  if build.with? "zfs"
+    depends_on :cask "openzfs"
+  end
+  
   def install
     system "./autogen.sh" if build.head?
     ENV.deparallelize
