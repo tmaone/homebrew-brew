@@ -1,4 +1,4 @@
-class MuslCrossX64 < Formula
+class MuslCrossArm < Formula
 
   desc "Linux cross compilers based on musl libc"
   homepage "https://github.com/richfelker/musl-cross-make"
