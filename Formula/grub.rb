@@ -13,7 +13,7 @@ class Grub < Formula
   option "with-mkfont", "build and install the 'grub-mkfont' utility"
   option "with-themes", "build and install GRUB themes"
   option "with-lzma", "enable liblzma integration"
-  option "with-zfs", "enable libzfs integration"
+  # option "with-zfs", "enable libzfs integration"
 
   depends_on "tmaone/metap/objconv" => :build
   depends_on "autoconf" if build.head?
@@ -29,10 +29,11 @@ class Grub < Formula
   if build.with? "lzma"
     depends_on "xz" => :build
   end
-  if build.with? "zfs"
-    depends_on :cask "openzfs"
-  end
-  
+
+  #if build.with? "zfs"
+  #  depends_on cask: 'openzfs'
+  #end
+
   def install
     system "./autogen.sh" if build.head?
     ENV.deparallelize
