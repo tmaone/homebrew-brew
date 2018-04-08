@@ -1,7 +1,6 @@
 class Sparsehash < Formula
   desc "Extremely memory-efficient hash_map implementation"
   homepage "https://github.com/sparsehash/sparsehash"
-  url "https://github.com/sparsehash/sparsehash.git"
 
   head do
 
