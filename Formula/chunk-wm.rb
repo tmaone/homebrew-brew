@@ -5,8 +5,8 @@ class ChunkWm < Formula
   # sha256 "f77711d4b4d6a49927b125f077334efb4e4633e33bf23689d3874c0c40f07e66"
   head "https://github.com/tmaone/chunkwm.git"
 
-  ARGV << "--HEAD"
-	ARGV << "--verbose"
+  # ARGV << "--HEAD"
+	# ARGV << "--verbose"
 
   option "without-tiling", "Do not build tiling plugin."
   option "without-ffm", "Do not build focus-follow-mouse plugin."

@@ -6,8 +6,8 @@ class SudoTouchid < Formula
   depends_on :macos => :sierra
   depends_on :xcode => :build
 
-	ARGV << "--HEAD"
-  ARGV << "--verbose"
+	# ARGV << "--HEAD"
+  # ARGV << "--verbose"
 
   def install
     xcodebuild "-project", "sudo.xcodeproj",

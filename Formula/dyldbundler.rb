@@ -6,8 +6,8 @@ class Dyldbundler < Formula
 
   depends_on "make" => :build
 
-  ARGV << "--HEAD"
-  ARGV << "--verbose"
+  # ARGV << "--HEAD"
+  # ARGV << "--verbose"
 
   def install
 		inreplace "makefile", "PREFIX=/usr/local", "PREFIX=#{prefix}"

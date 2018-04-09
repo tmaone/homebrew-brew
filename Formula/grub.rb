@@ -8,7 +8,7 @@ class Grub < Formula
   head "git://git.savannah.gnu.org/grub.git"
 
   # ARGV << "--HEAD"
-	ARGV << "--verbose"
+	#ARGV << "--verbose"
 
   option "with-mkfont", "build and install the 'grub-mkfont' utility"
   option "with-themes", "build and install GRUB themes"

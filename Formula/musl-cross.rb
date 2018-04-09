@@ -24,16 +24,16 @@ class MuslCross < Formula
 	depends_on "gawk" => :build
 
 	# patch :p1, :DATA
-  ARGV << "--with-aarch64"
-	ARGV << "--with-arm-hf"
-	ARGV << "--with-arm"
-	ARGV << "--with-i486"
-	ARGV << "--with-mipt"
-  ARGV << "--HEAD"
-  #ARGV << "--env=std"
-  ARGV << "--verbose"
-  #ARGV << "--debug"
-  #https://github.com/michaelforney/musl-cross-make.git"
+  # ARGV << "--with-aarch64"
+	# ARGV << "--with-arm-hf"
+	# ARGV << "--with-arm"
+	# ARGV << "--with-i486"
+	# ARGV << "--with-mipt"
+  # ARGV << "--HEAD"
+  # ARGV << "--env=std"
+  # ARGV << "--verbose"
+  # ARGV << "--debug"
+  # https://github.com/michaelforney/musl-cross-make.git"
 
   resource "linux-4.4.10.tar.xz" do
     url "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.10.tar.xz"

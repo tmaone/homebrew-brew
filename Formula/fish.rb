@@ -7,8 +7,8 @@ class Fish < Formula
   mirror "https://fishshell.com/files/2.7.1/fish-2.7.1.tar.gz"
   sha256 "e42bb19c7586356905a58578190be792df960fa81de35effb1ca5a5a981f0c5a"
 
-  ARGV << "--HEAD"
-  ARGV << "--verbose"
+  # ARGV << "--HEAD"
+  # ARGV << "--verbose"
   # ARGV << "--env=std"
 
   head do
@@ -27,7 +27,10 @@ class Fish < Formula
 
   def install
 
-    ENV["SED"] = "/usr/bin/sed"
+		ARGV << "--HEAD"
+		ARGV << "--verbose"
+
+		ENV["SED"] = "/usr/bin/sed"
     ENV["CXXFLAGS"] = "-I/usr/local/opt/llvm/include -std=c++11"
     ENV["CFLAGS"] = "-I/usr/local/opt/llvm/include"
     ENV["LDFLAGS"] = "-L/usr/local/opt/llvm/lib"

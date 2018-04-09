@@ -15,8 +15,8 @@ class Afsctool < Formula
   end
 
   env :std
-  ARGV << "--HEAD"
-  ARGV << "--verbose"
+  #ARGV << "--HEAD"
+  #ARGV << "--verbose"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build

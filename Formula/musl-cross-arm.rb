@@ -4,9 +4,9 @@ class MuslCrossArm < Formula
   homepage "https://github.com/richfelker/musl-cross-make"
   head "https://github.com/just-containers/musl-cross-make.git", :branch => "travis-build"
 
-  ARGV << "--HEAD"
+  # ARGV << "--HEAD"
   #ARGV << "--env=std"
-  ARGV << "--verbose"
+  # ARGV << "--verbose"
   #ARGV << "--debug"
 
   depends_on "gnu-sed" => :build
