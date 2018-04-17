@@ -1,19 +1,15 @@
 class ShairportSync < Formula
   desc "AirTunes emulator that adds multi-room capability"
   homepage "https://github.com/mikebrady/shairport-sync"
-  url "https://github.com/mikebrady/shairport-sync/archive/3.1.4.tar.gz"
-  sha256 "4c5a2ab40ef49896f5b6e59b20df4f621ebce47ee64d8571336f59820ae66379"
+  url "https://github.com/mikebrady/shairport-sync/archive/master.tar.gz"
+  sha256 ""
   head "https://github.com/mikebrady/shairport-sync.git", :branch => "development"
-
-  bottle do
-    sha256 "6a9a583ac9762accefd763a1da03780b1379dbf195016186543d341baf78151b" => :high_sierra
-    sha256 "7295bb44ed4cb087e4ab07d1b146b955982e93e099320bfefb671f2fbeeddfcc" => :sierra
-    sha256 "3ffa9e0965500ecfd2a673d99030af823a8b9b55df98b84b634d049150178466" => :el_capitan
-  end
+  version "2.3RC3"
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+	depends_on "libtool" => :build
   depends_on "openssl"
   depends_on "popt"
   depends_on "libsoxr"
@@ -21,11 +17,8 @@ class ShairportSync < Formula
   depends_on "libdaemon"
   depends_on "libconfig"
   depends_on "pulseaudio"
-
-	ARGV << "--build-from-source"
-	ARGV << "--env=std"
-	ARGV << "--verbose"
-
+  depends_on "libsndfile"
+	depends_on "tmaone/metap/alac"
 
   def install
     system "autoreconf", "-fvi"
@@ -39,6 +32,10 @@ class ShairportSync < Formula
       --with-soxr
       --with-metadata
       --with-pkg-config
+      --with-pa
+      --with-configfile
+      --with-apple-alac
+      --with-convolution
       --with-piddir=#{var}/run
       --sysconfdir=#{etc}/shairport-sync
       --prefix=#{prefix}
