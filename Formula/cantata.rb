@@ -15,14 +15,16 @@ class Cantata < Formula
 
   url 'https://github.com/CDrummond/cantata.git'
   homepage 'https://github.com/CDrummond/cantata'
-	version '2.1.0'
+  head "https://github.com/CDrummond/cantata.git"
+  
+  version '2.2.0'
 
   depends_on 'cmake' => :build
   depends_on 'libmtp'
   depends_on 'ffmpeg'
   depends_on 'qt5'
-	depends_on 'speex'
-	depends_on 'mpg123'
+  depends_on 'speex'
+  depends_on 'mpg123'
   depends_on 'taglib'
   depends_on 'taglib-extras'
 	depends_on 'zlib'
