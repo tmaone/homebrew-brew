@@ -11,6 +11,11 @@ class Radius < Formula
 	depends_on "mariadb"
 	depends_on "pcre"
 	depends_on "pkg-config" => :build
+	depends_on "openlibm"
+	depends_on "krb5"
+	depends_on "lua"
+	depends_on "ruby"
+
 
   def install
     ENV.deparallelize
