@@ -10,6 +10,7 @@ class Radius < Formula
 	depends_on "openldap"
 	depends_on "mariadb"
 	depends_on "pcre"
+	depends_on "pkg-config" => :build
 
   def install
     ENV.deparallelize
