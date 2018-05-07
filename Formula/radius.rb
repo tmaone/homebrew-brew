@@ -9,6 +9,7 @@ class Radius < Formula
   depends_on "talloc"
 	depends_on "openldap"
 	depends_on "mariadb"
+	depends_on "pcre"
 
   def install
     ENV.deparallelize
